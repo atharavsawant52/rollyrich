@@ -1,0 +1,23 @@
+[
+  {
+    "id": "drop001",
+    "name": "Drop 01 - Rolly Black Hoodie",
+    "price": 2199,
+    "status": "available",
+    "image": "/assets/hoodie1.jpg"
+  },
+  {
+    "id": "drop002",
+    "name": "Drop 02 - White Signature Tee",
+    "price": 1499,
+    "status": "soldout",
+    "image": "/assets/tshirt1.jpg"
+  },
+  {
+    "id": "drop003",
+    "name": "Drop 03 - Rolly Logo Cap",
+    "price": 999,
+    "status": "available",
+    "image": "/assets/cap1.jpg"
+  }
+]
