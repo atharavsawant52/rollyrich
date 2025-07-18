@@ -1,12 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "../../assets/logo.svg"; // Update path as per your structure
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const lastScrollY = useRef(0);
+
+  const location = useLocation();
+  const isHome = location.pathname === "/"; 
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,19 +38,26 @@ export default function Navbar() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -60, opacity: 0 }}
           transition={{ duration: 0.4, ease: "easeInOut" }}
-          className="fixed top-0 left-0 w-full z-50 bg-transparent px-6 py-4"
+          className={`fixed top-0 left-0 w-full z-50 px-6 py-4 transition-all duration-300 ${
+            isHome ? "bg-transparent text-white" : "bg-white text-black shadow-md"
+          }`}
         >
           <div className="max-w-7xl mx-auto flex justify-between items-center">
             {/* Logo */}
             <Link to="/">
               <img
-                src={logo}
+                src={isHome ? "https://rollyrich.com/logo.svg" : "https://rollyrich.com/logo.svg"} // no import
                 alt="RollyRich Logo"
                 className="h-10 w-auto object-contain"
               />
             </Link>
 
-            <div className="hidden md:flex items-center gap-8 text-sm uppercase font-medium tracking-wider text-white">
+            {/* Desktop Nav */}
+            <div
+              className={`hidden md:flex items-center gap-8 text-sm uppercase font-medium tracking-wider ${
+                isHome ? "text-white" : "text-black"
+              }`}
+            >
               {[
                 { name: "Shop", to: "/shop" },
                 { name: "About", to: "/about" },
@@ -63,20 +72,27 @@ export default function Navbar() {
                   <span className="transition-opacity duration-200 group-hover:opacity-80">
                     {item.name}
                   </span>
-                  <span className="absolute left-0 -bottom-0.5 w-full h-[1.5px] bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                  <span
+                    className={`absolute left-0 -bottom-0.5 w-full h-[1.5px] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left ${
+                      isHome ? "bg-white" : "bg-black"
+                    }`}
+                  />
                 </Link>
               ))}
             </div>
 
             {/* Mobile Hamburger */}
             <div className="md:hidden">
-              <button onClick={() => setMenuOpen(true)} className="text-xl text-white">
+              <button
+                onClick={() => setMenuOpen(true)}
+                className={`text-xl ${isHome ? "text-white" : "text-black"}`}
+              >
                 ☰
               </button>
             </div>
           </div>
 
-
+          {/* Mobile Menu */}
           <AnimatePresence>
             {menuOpen && (
               <motion.div
@@ -85,7 +101,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center gap-6 text-xl font-light uppercase"
+                className="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center gap-6 text-xl font-light uppercase text-black"
               >
                 <button
                   onClick={() => setMenuOpen(false)}

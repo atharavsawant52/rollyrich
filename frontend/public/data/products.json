@@ -1,23 +1,310 @@
 [
   {
-    "id": "drop001",
-    "name": "Drop 01 - Rolly Black Hoodie",
-    "price": 2199,
+    "id": "the-black-mold-oversized-tee",
+    "s": ["S", "M", "L", "XL"],
+    "title": "The Black Mold Oversized Tee",
+    "price": 3499,
     "status": "available",
-    "image": "/assets/hoodie1.jpg"
+    "category": "T-shirt",
+    "media": [
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/t-shirts/black-tshirt-0.webm",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/t-shirts/black-tshirt-1.jpg",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/t-shirts/black-tshirt-2.jpg",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/t-shirts/black-tshirt-3.jpg"
+    ],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "This black t-shirt blends baroque-inspired elegance with a modern streetwear edge, making it a standout piece for any wardrobe.\n\nFront Design: The shirt displays a bold 'Rolly Rich Baroque Edition' text encased in an ornate vintage-style frame. The intricate detailing gives it a luxurious and timeless aesthetic, perfect for those who enjoy mixing classic art with contemporary fashion.\n\nBack Design: The back features an elaborate celestial illustration with a central winged emblem surrounded by cosmic and geometric patterns. The phrase 'Heavenly Guided' is elegantly placed beneath the design, emphasizing themes of inspiration and transcendence.\n\nAll-Over Print: The shirt’s background carries subtle baroque motifs, giving it a consistent and sophisticated texture throughout. Made with high-quality fabric, this t-shirt is both comfortable and visually striking — ideal for anyone with an eye for baroque-inspired artistry.",
+    "details": {
+      "composition": "100% Cotton interlock fabric",
+      "gsm": "250",
+      "color": "Rich Black",
+      "weight": "260-280 Grams",
+      "fit": "Oversize",
+      "neckline": "Round",
+      "print": "Screen Print"
+    },
+    "care": [
+      "DO NOT DRY CLEAN",
+      "DO NOT IRON DESIGN",
+      "DO NOT BLEACH",
+      "MACHINE WASH COLD ONLY",
+      "TUMBLE DRY ON LOW SETTING"
+    ]
   },
   {
-    "id": "drop002",
-    "name": "Drop 02 - White Signature Tee",
-    "price": 1499,
+    "id": "floral-back-oversized-tee",
+    "s": ["S", "M", "L", "XL", "XXL"],
+    "title": "Floral Back Oversized Tee",
+    "price": 3499,
+    "status": "available",
+    "category": "T-shirt",
+    "media": [
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/t-shirts/floral-black-tshirt-1.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/t-shirts/floral-black-tshirt-2.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/t-shirts/floral-black-tshirt-3.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/t-shirts/floral-black-tshirt-4.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/t-shirts/floral-black-tshirt-5.webp"
+    ],
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "description": "This black t-shirt features an intricate and artistic design, perfect for those who appreciate a bold, edgy aesthetic.\n\nFront Design: The chest showcases a sleek 'Rolly Rich' text in a stylized font, giving it a modern and minimalist vibe.\n\nBack Design: The rear design is more elaborate, with a symmetrical arrangement of floral patterns, smoky effects, and ornamental details framing the phrase 'Glimpses of the Wonderful.' The dark tones and layered imagery add depth and a mysterious allure.\n\nSleeves: The subtle extension of the floral and abstract motifs onto the sleeves adds a seamless continuity to the overall design.\n\nCrafted with soft, premium fabric, this t-shirt is comfortable and stylish — suitable for casual wear or as a statement piece. Ideal for anyone looking to add an artistic flair to their wardrobe.",
+    "details": {
+      "composition": "100% Cotton Double Jersey",
+      "gsm": "250 fabric",
+      "color": "Rich Black",
+      "weight": "260-280 Grams",
+      "fit": "Oversize",
+      "neckline": "Round",
+      "print": "Screen Print"
+    },
+    "care": [
+      "DO NOT DRY CLEAN",
+      "DO NOT IRON DESIGN",
+      "DO NOT BLEACH",
+      "MACHINE WASH COLD ONLY",
+      "TUMBLE DRY ON LOW SETTING"
+    ]
+  },
+  {
+    "id": "party-forest-jacquard-jacket",
+    "s": ["S", "M", "L", "XL"],
+    "title": "Party Forest Jacquard Jacket",
+    "price": 7999,
+    "status": "available",
+    "category": "Jacket",
+    "media": [
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/jackets/jacard-black-jacket-1.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/jackets/jacard-black-jacket-2.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/jackets/jacard-black-jacket-4.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/jackets/jacard-black-jacket-5.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/jackets/jacard-black-jacket-6.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/jackets/jacard-black-jacket-3.webp"
+    ],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "The Rich Armani Fabric with blend of digital rolly hidden print",
+    "details": {
+      "description": "With the royal RollyRich designed the combination of multi colors."
+    },
+    "care": [
+      "DO NOT DRY CLEAN",
+      "DO NOT IRON DESIGN",
+      "DO NOT BLEACH",
+      "MACHINE WASH COLD ONLY",
+      "TUMBLE DRY ON LOW SETTING"
+    ]
+  },
+  {
+    "id": "the-hidden-gem-pant",
+    "s": ["28", "30", "32", "34"],
+    "title": "The Hidden Gem Pant",
+    "price": 4999,
+    "status": "available",
+    "category": "Bottom Wear",
+    "media": [
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/trousers/black-trousers-1.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/trousers/black-trousers-2.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/capsule/trousers/black-trousers-3.webp"
+    ],
+    "sizes": ["28", "30", "32", "34"],
+    "description": "",
+    "details": {
+      "composition": "Armani fabric",
+      "color": "Rich Black",
+      "fit": "Loose fit",
+      "print": "Digital Print"
+    },
+    "care": [
+      "DO NOT DRY CLEAN",
+      "DO NOT IRON DESIGN",
+      "DO NOT BLEACH",
+      "MACHINE WASH COLD ONLY",
+      "TUMBLE DRY ON LOW SETTING"
+    ]
+  },
+  {
+    "id": "the-white-cloud-sweatshirt",
+    "s": ["S", "M", "L", "XL"],
+    "title": "The White Cloud SweatShirt",
+    "price": 2499,
     "status": "soldout",
-    "image": "/assets/tshirt1.jpg"
+    "category": "Sweatshirt",
+    "media": [
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/white-sweatshirt-0.webm",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/white-sweatshirt-1.jpg",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/white-sweatshirt-2.jpg",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/white-sweatshirt-4.jpg"
+    ],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "Introducing the Rolly Rich Fade Text Effect Sweatshirt where style meets premium comfort. Crafted with high-quality 400 GSM fabric, this sweatshirt delivers warmth and durability — perfect for any season.\n\nThe fade text design adds a modern, edgy vibe, making it a standout piece in your wardrobe. Its clean white base pairs effortlessly with casual or streetwear looks.\n\nDesigned for versatility, it comes in sizes Small to XL — ensuring a perfect fit for everyone. Elevate your everyday wear with Rolly Rich's signature craftsmanship and bold design ethos. Redefine your fashion game with this iconic, statement-making sweatshirt!",
+    "details": {
+      "composition": "100% Cotton",
+      "gsm": "400",
+      "color": "Pearl White",
+      "weight": "425 GMS",
+      "fit": "Oversize",
+      "neckline": "Round",
+      "print": "Screen Print"
+    },
+    "care": [
+      "DO NOT DRY CLEAN",
+      "DO NOT IRON DESIGN",
+      "DO NOT BLEACH",
+      "MACHINE WASH COLD ONLY",
+      "TUMBLE DRY ON LOW SETTING"
+    ]
   },
   {
-    "id": "drop003",
-    "name": "Drop 03 - Rolly Logo Cap",
-    "price": 999,
-    "status": "available",
-    "image": "/assets/cap1.jpg"
-  }
+    "id": "the-darknight-sweatshirt",
+    "s": ["S", "M", "L", "XL"],
+    "title": "The DarkNight SweatShirt",
+    "price": 2799,
+    "status": "soldout",
+    "category": "Sweatshirt",
+    "media": [
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-sweatshirt-0.webm",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-sweatshirt-1.jpg",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-sweatshirt-2.jpg",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-sweatshirt-3.jpg",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-sweatshirt-4.jpg"
+    ],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "",
+    "details": {
+      "description": "Ease into comfort with the White sweater—fresh, crisp, and the perfect luxury of color for your winter style. Model is wearing size L. Disclaimer: This is an oversized sweater. Please order your regular size or a size smaller for a comfortable fit. We at Rolly Rich have a different size chart and request that you order according to your body measurements in inches."
+    },
+    "care": [
+      "DO NOT DRY CLEAN",
+      "DO NOT IRON DESIGN",
+      "DO NOT BLEACH",
+      "MACHINE WASH COLD ONLY",
+      "TUMBLE DRY ON LOW SETTING"
+    ]
+  },
+  {
+    "id": "business-class-half-sleeve-shirt",
+    "s": ["S", "M", "L", "XL"],
+    "title": "Business Class Half Sleeve Shirt",
+    "price": 2499,
+    "status": "soldout",
+    "category": "Shirt",
+    "media": [
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-shirt-0.webm",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-shirt-1.jpg",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-shirt-2.jpg",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-shirt-3.jpg",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-shirt-4.jpg"
+    ],
+    "sizes": ["S", "M", "L", "XL"],
+    "description": "Elevate your wardrobe with the Rolly Rich Luxury Cuban Collar Shirt—a perfect blend of timeless sophistication and modern design. Crafted from premium, breathable fabric, this shirt delivers unparalleled comfort without compromising on style. Featuring a relaxed Cuban collar and an elegant golden printed Rolly Rich logo, it exudes effortless luxury. Available in classic black and sleek grey, this versatile piece is tailored for a flattering fit across sizes small to XL. Whether paired with tailored trousers for formal occasions or styled casually with chinos, this shirt is a statement of refined taste. Experience the perfect harmony of style and comfort with Rolly Rich.",
+    "details": {
+      "composition": "60% Cotton 20% Polyester 20% Spandex",
+      "gsm": 240,
+      "color": "Rich Black & Sleek Grey",
+      "weight": "260-280 Grams",
+      "fit": "Cuban Relaxed Fit",
+      "neckline": "Collared",
+      "print": "Golden Reflective Print"
+    },
+    "care": [
+      "DO NOT DRY CLEAN",
+      "DO NOT IRON DESIGN",
+      "DO NOT BLEACH",
+      "MACHINE WASH COLD ONLY",
+      "TUMBLE DRY ON LOW SETTING"
+    ]
+  },
+  {
+    "id": "rolly-diamond-tee",
+    "s": ["S", "M", "L", "XL", "XXL"],
+    "title": "Rolly Diamond Tee",
+    "price": "₹2999",
+    "sizes": ["S", "M", "L", "XL", "XXL"],
+    "category": "T-Shirt",
+    "description": "If you believe in making bold moves and living with luxury, this Diamond Enriched tee is all you need. Featuring vibrant diamonds on black rich cotton with golden reflective branding, this design brings the richness with its rich diamonds. Comfort? Why don't you check it for yourself?",
+    "details": {
+      "type": "UNISEX",
+      "composition": "96% Cotton 4% Spandex",
+      "gsm": 260,
+      "color": "Rich Black",
+      "weight": "260-280 Grams",
+      "fit": "Oversize",
+      "neckline": "Round",
+      "print": "Digital Print and Reflective Print"
+    },
+    "care": [
+      "DO NOT DRY CLEAN",
+      "DO NOT IRON DESIGN",
+      "DO NOT BLEACH",
+      "MACHINE WASH COLD ONLY",
+      "TUMBLE DRY ON LOW SETTING",
+      "TURN ITEM INSIDE OUT"
+    ],
+    "media": [
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-tshirt-0.mp4",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-tshirt-1.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-tshirt-2.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-tshirt-5.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/black-tshirt-4.webp"
+    ]
+  },
+  {
+    "id": "acid-wash-leather-pocket-tee",
+    "s": ["S", "M", "L", "XL"],
+    "title": "Acid Wash Leather Pocket Tee",
+    "price": "₹1499",
+    "sizes": ["S", "M", "L", "XL"],
+    "category": "T-Shirt",
+    "description": "Combination of Acid wash fabric and leather feels so comfy, suitable for airport look. Both men and women can wear this comfy t-shirt.",
+    "details": {
+      "composition": "100% Cotton FRENCH TERRY",
+      "gsm": 280,
+      "color": "GREY BLACK",
+      "weight": "280-300 Grams",
+      "fit": "Oversize RAGLAN",
+      "neckline": "Round",
+      "print": "EMBROIDERY"
+    },
+    "care": [
+      "DO NOT DRY CLEAN",
+      "DO NOT IRON DESIGN",
+      "DO NOT BLEACH",
+      "MACHINE WASH COLD ONLY",
+      "TUMBLE DRY ON LOW SETTING"
+    ],
+    "media": [
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/gray-acidwash-1.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/gray-acidwash-2.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/gray-acidwash-3.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/gray-acidwash-4.webp",
+      "https://rollyrich.s3.ap-south-1.amazonaws.com/men/basics/gray-acidwash-5.webp"
+    ]
+  },
+  {
+  "id": "bloody-polo",
+  "title": "Bloody Polo",
+  "price": "₹999",
+  "sizes": ["S", "M", "L", "XL"],
+  "category": "T-Shirt",
+  "description": "This premium polo T-shirt is made from 100% cotton pique knitted fabric, offering a classic textured finish and superior comfort. With a medium-weight 240 GSM, it provides a perfect balance of breathability, durability, and structure—ideal for all-day wear. The natural cotton fibers ensure softness against the skin while the pique knit adds a touch of timeless style.",
+  "details": {
+    "composition": "100% Cotton",
+    "gsm": 240,
+    "color": "Red",
+    "fit": "Regular Fit",
+    "print": "EMBROIDERY"
+  },
+  "care": [
+    "DO NOT DRY CLEAN",
+    "DO NOT IRON DESIGN",
+    "DO NOT BLEACH",
+    "MACHINE WASH COLD ONLY",
+    "TUMBLE DRY ON LOW SETTING"
+  ],
+  "media": [
+    "https://rollyrich.s3.ap-south-1.amazonaws.com/app/basics-t-shirt-red-28R27R-0.webp",
+    "https://rollyrich.s3.ap-south-1.amazonaws.com/app/basics-t-shirt-red-28R27R-1.webp",
+    "https://rollyrich.s3.ap-south-1.amazonaws.com/app/basics-t-shirt-red-28R27R-2.webp",
+    "https://rollyrich.s3.ap-south-1.amazonaws.com/app/basics-t-shirt-red-28R27R-3.webp"
+  ]
+}
+
 ]
