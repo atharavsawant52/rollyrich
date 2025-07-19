@@ -10,7 +10,7 @@ export default function Hero() {
         playsInline
         className="absolute inset-0 w-full h-full object-cover z-0"
       >
-        <source src="public\bg\intro.mp4" type="video/mp4" />
+        <source src="https://ik.imagekit.io/v88ozoebq/rollyrich/rollyrich_heroSection_intro.mp4?updatedAt=1752914397208" type="video/mp4" />
       </video>
 
       <div className="absolute inset-0 bg-black/40 z-10" />
