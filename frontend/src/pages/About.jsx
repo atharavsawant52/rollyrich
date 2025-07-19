@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { FaInstagram, FaYoutube } from "react-icons/fa";
 
 const timeline = [
   {
@@ -27,63 +28,120 @@ const timeline = [
   },
 ];
 
+const fadeVariants = (fromLeft = true) => ({
+  hidden: { opacity: 0, x: fromLeft ? -60 : 60 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+  exit: { opacity: 0, x: fromLeft ? 60 : -60, transition: { duration: 0.4 } },
+});
+
 export default function About() {
+  const heading = "Meet Vinayak Mali";
+
   return (
-    <section className="min-h-screen bg-[#f5f3ef] text-black py-20 px-6">
-      <h2 className="text-4xl md:text-5xl font-bold uppercase text-center mb-12 tracking-wide">
-        Meet Vinayak Mali
+    <section className="min-h-screen bg-[#f5f3ef] text-black py-20 px-4 sm:px-6 overflow-hidden">
+      <motion.div
+        className="flex justify-center mb-8"
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <img
+          src="https://ik.imagekit.io/v88ozoebq/rollyrich/image.png?updatedAt=1752947110656"
+          alt="Vinayak Mali"
+          className="w-24 sm:w-32 md:w-40 h-auto rounded-full object-cover shadow-2xl border-4 border-white"
+        />
+      </motion.div>
+
+      <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase text-center mb-10 tracking-widest">
+        {heading.split("").map((char, i) => (
+          <motion.span
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.05 }}
+            viewport={{ once: true }}
+          >
+            {char}
+          </motion.span>
+        ))}
       </h2>
 
       <motion.div
-        className="max-w-3xl mx-auto mb-20 text-center"
+        className="max-w-2xl mx-auto mb-16 text-center"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
         viewport={{ once: true }}
       >
-        <p className="text-lg md:text-xl text-gray-700">
+        <p className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed">
           <strong>Vinayak Mali</strong> is a popular YouTuber and a beloved
           people's celebrity — known as <strong>"Dadus"</strong> by his fans.
           Coming from a middle-class Marathi family, he brings joy and
           authenticity through his powerful Agri-Koli and regional content.
         </p>
-        <div className="mt-4 flex justify-center gap-4 text-blue-700 underline text-sm">
+        <div className="mt-6 flex justify-center gap-6 text-black text-xl sm:text-2xl">
           <a href="https://www.instagram.com/iam_vinayakmali" target="_blank">
-            Instagram
+            <FaInstagram className="hover:text-pink-600 transition" />
           </a>
           <a
             href="https://www.youtube.com/channel/UCSB-L3HN2tJoizsxR45vUFQ"
             target="_blank"
           >
-            YouTube
-          </a>
-          <a href="http://rollyrich.com/" target="_blank">
-            ROLRYRICH
+            <FaYoutube className="hover:text-red-600 transition" />
           </a>
         </div>
       </motion.div>
 
-      <div className="max-w-4xl mx-auto space-y-16">
-        {timeline.map((item, index) => (
-          <motion.div
-            key={index}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
-            viewport={{ once: true }}
-            className="border-l-4 border-black pl-6 relative"
-          >
-            <div className="absolute w-3 h-3 bg-black rounded-full -left-1 top-1.5" />
-            <p className="text-sm uppercase tracking-widest text-gray-500">
-              {item.year}
-            </p>
-            <h3 className="text-xl md:text-2xl font-semibold mt-1">
-              {item.title}
-            </h3>
-            <p className="text-gray-700 mt-2 max-w-prose">{item.description}</p>
-          </motion.div>
-        ))}
+      <div className="relative max-w-5xl mx-auto">
+        <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-black" />
+        <div className="space-y-16">
+          {timeline.map((item, index) => {
+            const isLeft = index % 2 === 0;
+            return (
+              <motion.div
+                key={index}
+                variants={fadeVariants(isLeft)}
+                initial="hidden"
+                whileInView="visible"
+                exit="exit"
+                viewport={{ once: false, amount: 0.3 }}
+                className={`relative flex flex-col ${
+                  isLeft
+                    ? "md:flex-row md:justify-start"
+                    : "md:flex-row md:justify-end"
+                } items-center`}
+              >
+                <div className="w-full md:w-1/2 px-4 sm:px-6 md:px-12">
+                  <p className="text-xs sm:text-sm uppercase tracking-widest text-gray-500">
+                    {item.year}
+                  </p>
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-semibold mt-1">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-700 mt-2 leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
+
+      <motion.div
+        className="max-w-5xl mx-auto mt-20"
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1 }}
+        viewport={{ once: true }}
+      >
+        <img
+          src="https://rollyrich.s3.ap-south-1.amazonaws.com/home/basic-grps.webp"
+          alt="Vinayak Group"
+          className="rounded-2xl shadow-2xl w-full object-cover"
+        />
+      </motion.div>
     </section>
   );
 }
