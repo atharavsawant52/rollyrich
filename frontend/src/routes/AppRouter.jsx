@@ -1,8 +1,8 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import ScrollToTop from "../components/layout/ScrollToTop"; 
+import { useSelector } from "react-redux";
+import ScrollToTop from "../components/layout/ScrollToTop";
 
-// Lazy-loaded pages
 const Home = lazy(() => import("../pages/Home"));
 const Shop = lazy(() => import("../pages/Shop"));
 const ProductDetail = lazy(() => import("../pages/ProductDetail"));
@@ -11,15 +11,28 @@ const Archive = lazy(() => import("../pages/Archive"));
 const Login = lazy(() => import("../pages/Login"));
 const Signup = lazy(() => import("../pages/Signup"));
 const CategoryPage = lazy(() => import("../pages/CategoryPage"));
+const Cart = lazy(() => import("../pages/Cart"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
-export default function AppRouter() {
+function AppRouter() {
+  const user = useSelector((state) => state.auth.user);
+
+  const RequireAuth = ({ children }) => {
+    return user ? children : <Navigate to="/login" />;
+  };
+
+  const RequireAdmin = ({ children }) => {
+    return user?.role === "admin" ? children : <Navigate to="/" />;
+  };
+
   return (
     <>
-      <ScrollToTop /> 
+      <ScrollToTop />
       <Suspense
         fallback={
-          <div className="text-center py-20 text-gray-500">Loading page...</div>
+          <div className="text-center py-20 text-gray-400 animate-pulse">
+            Loading page...
+          </div>
         }
       >
         <Routes>
@@ -29,6 +42,16 @@ export default function AppRouter() {
           <Route path="/category/:name" element={<CategoryPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/archive" element={<Archive />} />
+
+          <Route
+            path="/cart"
+            element={
+              <RequireAuth>
+                <Cart />
+              </RequireAuth>
+            }
+          />
+
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<NotFound />} />
@@ -37,3 +60,5 @@ export default function AppRouter() {
     </>
   );
 }
+
+export default AppRouter;

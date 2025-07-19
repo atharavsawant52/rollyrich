@@ -1,20 +1,23 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { addToCart } from "../redux/features/cart/cartSlice";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const product = useSelector(state =>
-    state.products.items.find(item => item.id === id)
+  const user = useSelector((state) => state.auth.user);
+  const product = useSelector((state) =>
+    state.products.items.find((item) => item.id === id)
   );
 
   const [selectedImage, setSelectedImage] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
+  const [error, setError] = useState("");
 
-  // Collapse States
   const [showDetails, setShowDetails] = useState(true);
   const [showDescription, setShowDescription] = useState(true);
   const [showCare, setShowCare] = useState(true);
@@ -24,6 +27,29 @@ export default function ProductDetail() {
       setSelectedImage(product.media[0]);
     }
   }, [product]);
+
+  const handleAddToCart = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    if (!selectedSize) {
+      setError("Please select a size.");
+      return;
+    }
+
+    const cartItem = {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      image: product.media?.[0],
+      size: selectedSize,
+      quantity: 1,
+    };
+
+    dispatch(addToCart(cartItem));
+    setError("");
+  };
 
   if (!product) {
     return (
@@ -40,7 +66,6 @@ export default function ProductDetail() {
       transition={{ duration: 1 }}
       className="pt-28 min-h-screen bg-[#f9f9f9] max-w-7xl mx-auto px-6 py-10"
     >
-      {/* 🔙 Go Back Button */}
       <div className="flex justify-end mb-6">
         <motion.button
           whileHover={{ x: 5 }}
@@ -51,9 +76,7 @@ export default function ProductDetail() {
         </motion.button>
       </div>
 
-      {/* Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        {/* Left: Image Display */}
         <motion.div
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -63,42 +86,44 @@ export default function ProductDetail() {
             {selectedImage.endsWith(".webm") ? (
               <video
                 src={selectedImage}
-                className="w-full h-[500px] object-contain border rounded-xl shadow-lg"
-                controls
                 autoPlay
                 muted
                 loop
+                playsInline
+                className="w-full h-[500px] object-contain border rounded-xl shadow-lg"
               />
             ) : (
               <img
                 src={selectedImage}
-                alt="Main"
                 className="w-full h-[500px] object-contain border rounded-xl shadow-lg"
+                alt="Product"
               />
             )}
           </div>
 
-          {/* Thumbnails */}
           <div className="flex gap-2 mt-4 overflow-x-auto">
-            {product.media?.map((img, idx) => (
-              <motion.div whileHover={{ scale: 1.1 }} key={idx}>
+            {product.media?.map((img, i) => (
+              <motion.div whileHover={{ scale: 1.1 }} key={i}>
                 {img.endsWith(".webm") ? (
                   <video
                     src={img}
                     onClick={() => setSelectedImage(img)}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
                     className={`w-20 h-20 object-cover border rounded-lg cursor-pointer ${
                       selectedImage === img ? "ring-2 ring-black" : ""
                     }`}
-                    muted
                   />
                 ) : (
                   <img
                     src={img}
-                    alt={`Thumb ${idx}`}
                     onClick={() => setSelectedImage(img)}
                     className={`w-20 h-20 object-cover border rounded-lg cursor-pointer ${
                       selectedImage === img ? "ring-2 ring-black" : ""
                     }`}
+                    alt={`Thumb ${i}`}
                   />
                 )}
               </motion.div>
@@ -106,19 +131,16 @@ export default function ProductDetail() {
           </div>
         </motion.div>
 
-        {/* Right: Product Info */}
         <motion.div
           initial={{ x: 50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 1 }}
-          className="space-y-6"
         >
           <h1 className="text-3xl font-semibold">{product.title}</h1>
           <p className="text-2xl font-medium text-black">₹{product.price}</p>
 
-          {/* Size Selection */}
           {product.sizes?.length > 0 && (
-            <div>
+            <div className="mt-4">
               <p className="font-semibold mb-2">Select Size</p>
               <div className="flex gap-3 flex-wrap">
                 {product.sizes.map((size) => (
@@ -145,113 +167,99 @@ export default function ProductDetail() {
             </div>
           )}
 
-          {/* Add to Cart or Sold Out */}
           {product.status === "soldout" ? (
-            <span className="inline-block bg-red-600 text-white px-4 py-2 text-sm rounded shadow">
+            <span className="inline-block bg-red-600 text-white px-4 py-2 text-sm rounded shadow mt-6">
               SOLD OUT
             </span>
           ) : (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="mt-6 px-6 py-3 bg-black text-white rounded hover:bg-gray-800 transition shadow"
-            >
-              Add to Cart
-            </motion.button>
+            <>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleAddToCart}
+                className="mt-6 px-6 py-3 bg-black text-white rounded hover:bg-gray-800 transition shadow"
+              >
+                Add to Cart
+              </motion.button>
+              <AnimatePresence>
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    className="mt-3 text-red-600 text-sm"
+                  >
+                    ⚠️ {error}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </>
           )}
 
-          {/* Product Details Accordion */}
-          <motion.div
-            whileHover={{ y: -2 }}
-            className="mt-6 border p-4 rounded-xl shadow bg-white"
-          >
-            <div className="flex justify-between items-center">
-              <h3 className="font-bold text-lg">Product Details</h3>
-              <button
-                onClick={() => setShowDetails(!showDetails)}
-                className="text-lg font-bold text-gray-500"
-              >
-                {showDetails ? "-" : "+"}
-              </button>
-            </div>
-            <AnimatePresence>
-              {showDetails && (
-                <motion.ul
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="list-disc ml-5 text-gray-700 text-sm space-y-1 mt-2 overflow-hidden"
+          {[
+            {
+              title: "Product Details",
+              open: showDetails,
+              toggle: setShowDetails,
+              content: product.details,
+            },
+            {
+              title: "Product Description",
+              open: showDescription,
+              toggle: setShowDescription,
+              content: product.description,
+            },
+            {
+              title: "Product Care",
+              open: showCare,
+              toggle: setShowCare,
+              content: product.care,
+            },
+          ].map((section, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ y: -2 }}
+              className="mt-6 border p-4 rounded-xl shadow bg-white"
+            >
+              <div className="flex justify-between items-center">
+                <h3 className="font-bold text-lg">{section.title}</h3>
+                <button
+                  onClick={() => section.toggle(!section.open)}
+                  className="text-lg font-bold text-gray-500"
                 >
-                  {product.details?.composition && (
-                    <li>Composition: {product.details.composition}</li>
-                  )}
-                  {product.details?.fit && <li>Fit: {product.details.fit}</li>}
-                  {product.details?.gsm && <li>GSM: {product.details.gsm}</li>}
-                  {product.details?.print && (
-                    <li>Print: {product.details.print}</li>
-                  )}
-                </motion.ul>
-              )}
-            </AnimatePresence>
-          </motion.div>
-
-          {/* Description */}
-          <motion.div
-            whileHover={{ y: -2 }}
-            className="mt-6 border p-4 rounded-xl shadow bg-white"
-          >
-            <div className="flex justify-between items-center">
-              <h3 className="font-bold text-lg">Product Description</h3>
-              <button
-                onClick={() => setShowDescription(!showDescription)}
-                className="text-lg font-bold text-gray-500"
-              >
-                {showDescription ? "-" : "+"}
-              </button>
-            </div>
-            <AnimatePresence>
-              {showDescription && (
-                <motion.p
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="text-gray-700 text-sm whitespace-pre-line mt-2 overflow-hidden"
-                >
-                  {product.description}
-                </motion.p>
-              )}
-            </AnimatePresence>
-          </motion.div>
-
-          {/* Care Instructions */}
-          <motion.div
-            whileHover={{ y: -2 }}
-            className="mt-6 border p-4 rounded-xl shadow bg-white"
-          >
-            <div className="flex justify-between items-center">
-              <h3 className="font-bold text-lg">Product Care</h3>
-              <button
-                onClick={() => setShowCare(!showCare)}
-                className="text-lg font-bold text-gray-500"
-              >
-                {showCare ? "-" : "+"}
-              </button>
-            </div>
-            <AnimatePresence>
-              {showCare && (
-                <motion.ul
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="list-disc ml-5 text-gray-700 text-sm space-y-1 mt-2 overflow-hidden"
-                >
-                  {product.care?.map((rule, i) => (
-                    <li key={i}>{rule}</li>
-                  ))}
-                </motion.ul>
-              )}
-            </AnimatePresence>
-          </motion.div>
+                  {section.open ? "-" : "+"}
+                </button>
+              </div>
+              <AnimatePresence>
+                {section.open && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="text-sm mt-2 overflow-hidden text-gray-700"
+                  >
+                    {Array.isArray(section.content) ? (
+                      <ul className="list-disc ml-5 space-y-1">
+                        {section.content.map((item, idx) => (
+                          <li key={idx}>{item}</li>
+                        ))}
+                      </ul>
+                    ) : typeof section.content === "object" ? (
+                      <ul className="list-disc ml-5 space-y-1">
+                        {Object.entries(section.content).map(([key, value]) => (
+                          <li key={key}>
+                            {key[0].toUpperCase() + key.slice(1)}: {value}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="whitespace-pre-line">{section.content}</p>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </motion.section>

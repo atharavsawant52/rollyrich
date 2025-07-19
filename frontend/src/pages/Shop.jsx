@@ -23,7 +23,6 @@ export default function Shop() {
 
   return (
     <section className="min-h-screen px-6 md:px-14 py-20 mt-10 bg-white">
-      {/* Heading */}
       <motion.h1
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -33,7 +32,6 @@ export default function Shop() {
         Available Drops
       </motion.h1>
 
-      {/* Category Filter */}
       <div className="flex flex-wrap justify-center gap-4 mb-12">
         {categories.map((cat, i) => (
           <motion.button
@@ -52,7 +50,6 @@ export default function Shop() {
         ))}
       </div>
 
-      {/* Product Grid */}
       {status === "loading" && (
         <p className="text-center text-gray-400">Loading drops...</p>
       )}

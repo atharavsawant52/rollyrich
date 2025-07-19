@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-// Framer Motion Variants
 const container = {
   hidden: {},
   show: { transition: { staggerChildren: 0.12 } },
@@ -48,7 +47,6 @@ export default function HomeCategoriesSection() {
   return (
     <section className="bg-white py-28 px-6 md:px-14 overflow-hidden">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-        {/* Left: Dynamic Category List */}
         <motion.div
           variants={container}
           initial="hidden"
@@ -64,7 +62,9 @@ export default function HomeCategoriesSection() {
               transition={{ type: "spring", stiffness: 200 }}
               className="flex items-center justify-between border-b border-gray-300 pb-3 cursor-pointer group"
               onMouseEnter={() => setHoveredImage(cat.image)}
-              onClick={() => navigate(`/category/${encodeURIComponent(cat.name)}`)}
+              onClick={() =>
+                navigate(`/category/${encodeURIComponent(cat.name)}`)
+              }
             >
               <div className="flex items-center gap-4">
                 <span className="text-md text-gray-400 font-semibold w-6">
@@ -81,7 +81,6 @@ export default function HomeCategoriesSection() {
           ))}
         </motion.div>
 
-        {/* Right: Hovered Category Image */}
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}

@@ -6,7 +6,6 @@ export default function LoadingScreen() {
   const [slideOut, setSlideOut] = useState(false);
 
   useEffect(() => {
-    // Lock scroll when loading starts
     document.body.style.overflow = "hidden";
 
     const interval = setInterval(() => {
@@ -15,16 +14,14 @@ export default function LoadingScreen() {
           clearInterval(interval);
           setTimeout(() => {
             setSlideOut(true);
-            // Unlock scroll when loading ends
             document.body.style.overflow = "auto";
-          }, 600); // Delay matches exit animation
+          }, 600);
           return 100;
         }
         return prev + 1;
       });
-    }, 30); // ~3s full load
+    }, 30);
 
-    // Cleanup on unmount
     return () => {
       clearInterval(interval);
       document.body.style.overflow = "auto";
@@ -38,7 +35,6 @@ export default function LoadingScreen() {
       animate={{ y: slideOut ? "-100%" : "0%" }}
       transition={{ duration: 1.1, ease: "easeInOut" }}
     >
-      {/* Gradient Shine Overlay */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.07 }}
@@ -46,7 +42,6 @@ export default function LoadingScreen() {
         className="absolute inset-0 bg-gradient-to-r from-white via-white to-transparent opacity-10 pointer-events-none"
       />
 
-      {/* Logo */}
       <motion.h1
         initial={{ scale: 0.8, opacity: 0, filter: "blur(6px)" }}
         animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
@@ -56,7 +51,6 @@ export default function LoadingScreen() {
         ROLLYRICH
       </motion.h1>
 
-      {/* Percentage Loader */}
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -65,7 +59,6 @@ export default function LoadingScreen() {
         style={{ textShadow: "1px 1px 0 #999" }}
       >
         {progress}%
-        {/* Reflection line */}
         <span className="absolute left-0 top-1/2 w-full h-0.5 bg-white opacity-10 blur-sm rotate-[4deg]" />
       </motion.span>
     </motion.div>

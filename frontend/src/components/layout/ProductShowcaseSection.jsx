@@ -49,7 +49,6 @@ export default function ProductShowcaseSlider() {
 
   return (
     <section className="py-24 px-4 bg-white overflow-hidden">
-      {/* 🔠 Heading */}
       <h2
         ref={headingRef}
         className="text-4xl md:text-5xl font-extrabold uppercase tracking-wider mb-12 text-center flex flex-wrap justify-center"
@@ -61,7 +60,6 @@ export default function ProductShowcaseSlider() {
         ))}
       </h2>
 
-      {/* 🧊 Swiper + Detail Layout */}
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center px-4">
         {status === "succeeded" && (
           <Swiper
@@ -99,7 +97,6 @@ export default function ProductShowcaseSlider() {
           </Swiper>
         )}
 
-        {/* 🧾 Detail Section */}
         <AnimatePresence mode="wait">
           {activeProduct && (
             <motion.div
@@ -127,8 +124,7 @@ export default function ProductShowcaseSlider() {
               {activeProduct.details && (
                 <div className="text-sm text-gray-500">
                   <p>
-                    <strong>Fabric:</strong>{" "}
-                    {activeProduct.details.composition}
+                    <strong>Fabric:</strong> {activeProduct.details.composition}
                   </p>
                   <p>
                     <strong>Fit:</strong> {activeProduct.details.fit}
@@ -147,7 +143,6 @@ export default function ProductShowcaseSlider() {
         </AnimatePresence>
       </div>
 
-      {/* Loader States */}
       {status === "loading" && (
         <div className="text-gray-500 text-center mt-8">Loading...</div>
       )}

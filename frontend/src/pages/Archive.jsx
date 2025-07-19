@@ -11,7 +11,7 @@ export default function Archive() {
     dispatch(getProducts());
   }, [dispatch]);
 
-  // Filter only sold-out products
+
   const archiveDrops = items.filter((item) => item.status === "soldout");
 
   return (
@@ -45,7 +45,6 @@ export default function Archive() {
                 <p className="text-gray-600 text-sm">₹{product.price}</p>
               </div>
 
-              {/* SOLD OUT overlay */}
               <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center">
                 <span className="text-white text-2xl font-bold tracking-wider">SOLD OUT</span>
               </div>

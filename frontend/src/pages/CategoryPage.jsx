@@ -14,7 +14,6 @@ export default function CategoryPage() {
   return (
     <section className="py-20 px-6 md:px-14 bg-white min-h-screen">
       <div className="max-w-7xl mx-auto">
-        {/* 🔙 Go Back Button - Right Side */}
         <div className="flex justify-end mb-6">
           <button
             onClick={() => navigate(-1)}
@@ -24,20 +23,21 @@ export default function CategoryPage() {
           </button>
         </div>
 
-        {/* Heading */}
         <h2 className="text-3xl font-bold mb-12 uppercase tracking-wide">
           {decodeURIComponent(name)} Collection
         </h2>
 
-        {/* Product Grid */}
         {filtered.length === 0 ? (
           <p className="text-gray-500">No products found in this category.</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {filtered.map((product) => {
               const firstImage = Array.isArray(product.media)
-                ? product.media.find((m) =>
-                    m.endsWith(".webp") || m.endsWith(".jpg") || m.endsWith(".png")
+                ? product.media.find(
+                    (m) =>
+                      m.endsWith(".webp") ||
+                      m.endsWith(".jpg") ||
+                      m.endsWith(".png")
                   )
                 : null;
 
@@ -62,7 +62,9 @@ export default function CategoryPage() {
                       <h3 className="font-semibold text-lg text-gray-900">
                         {product.title}
                       </h3>
-                      <p className="text-sm text-gray-500">{product.category}</p>
+                      <p className="text-sm text-gray-500">
+                        {product.category}
+                      </p>
                       <p className="text-base font-medium text-black mt-1">
                         {product.price}
                       </p>

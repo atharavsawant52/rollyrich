@@ -1,6 +1,8 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
+import { logout } from "../../redux/features/auth/authSlice";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -8,12 +10,18 @@ export default function Navbar() {
   const lastScrollY = useRef(0);
 
   const location = useLocation();
-  const isHome = location.pathname === "/"; 
+  const isHome = location.pathname === "/";
+  const user = useSelector((state) => state.auth.user);
+
+  const cartItems = useSelector((state) => state.cart.items);
+  const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
       if (currentScrollY < 100) {
         setShowNavbar(true);
       } else if (currentScrollY > lastScrollY.current) {
@@ -21,13 +29,18 @@ export default function Navbar() {
       } else {
         setShowNavbar(true);
       }
-
       lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    localStorage.removeItem("currentUser");
+    navigate("/login");
+  };
 
   return (
     <AnimatePresence>
@@ -39,49 +52,56 @@ export default function Navbar() {
           exit={{ y: -60, opacity: 0 }}
           transition={{ duration: 0.4, ease: "easeInOut" }}
           className={`fixed top-0 left-0 w-full z-50 px-6 py-4 transition-all duration-300 ${
-            isHome ? "bg-transparent text-white" : "bg-white text-black shadow-md"
+            isHome
+              ? "bg-transparent text-white"
+              : "bg-white text-black shadow-md"
           }`}
         >
           <div className="max-w-7xl mx-auto flex justify-between items-center">
-            {/* Logo */}
             <Link to="/">
               <img
-                src={isHome ? "https://rollyrich.com/logo.svg" : "https://rollyrich.com/logo.svg"} // no import
+                src="https://rollyrich.com/logo.svg"
                 alt="RollyRich Logo"
                 className="h-10 w-auto object-contain"
               />
             </Link>
 
-            {/* Desktop Nav */}
             <div
               className={`hidden md:flex items-center gap-8 text-sm uppercase font-medium tracking-wider ${
                 isHome ? "text-white" : "text-black"
               }`}
             >
-              {[
-                { name: "Shop", to: "/shop" },
-                { name: "About", to: "/about" },
-                { name: "Login", to: "/login" },
-                { name: "Cart (0)", to: "/cart" },
-              ].map((item, index) => (
-                <Link
-                  key={index}
-                  to={item.to}
-                  className="group relative inline-block"
-                >
-                  <span className="transition-opacity duration-200 group-hover:opacity-80">
-                    {item.name}
-                  </span>
-                  <span
-                    className={`absolute left-0 -bottom-0.5 w-full h-[1.5px] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left ${
-                      isHome ? "bg-white" : "bg-black"
-                    }`}
-                  />
+              <Link to="/shop" className="hover:opacity-80">
+                Shop
+              </Link>
+              <Link to="/about" className="hover:opacity-80">
+                About
+              </Link>
+              {user?.role === "admin" && (
+                <Link to="/admin/add-product" className="hover:opacity-80">
+                  Add Product
                 </Link>
-              ))}
+              )}
+              <Link to="/cart" className="hover:opacity-80">
+                Cart ({totalQuantity})
+              </Link>
+
+              {user ? (
+                <>
+                  <span className="font-semibold text-white">{`Hi, ${
+                    user.name.split(" ")[0]
+                  }`}</span>
+                  <button onClick={handleLogout} className="hover:opacity-80">
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <Link to="/login" className="hover:opacity-80">
+                  Login
+                </Link>
+              )}
             </div>
 
-            {/* Mobile Hamburger */}
             <div className="md:hidden">
               <button
                 onClick={() => setMenuOpen(true)}
@@ -92,7 +112,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Menu */}
           <AnimatePresence>
             {menuOpen && (
               <motion.div
@@ -101,26 +120,72 @@ export default function Navbar() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="fixed inset-0 bg-white z-40 flex flex-col items-center justify-center gap-6 text-xl font-light uppercase text-black"
+                className="fixed inset-0 bg-black z-40 flex flex-col items-center justify-center gap-6 text-xl font-light uppercase text-white"
               >
                 <button
                   onClick={() => setMenuOpen(false)}
-                  className="absolute top-6 right-6 text-3xl font-thin"
+                  className="absolute top-6 right-6 text-3xl font-thin text-white"
                 >
                   ×
                 </button>
 
-                <Link to="/shop" onClick={() => setMenuOpen(false)} className="hover:opacity-80 transition">
+                {user && (
+                  <span className="absolute top-6 left-6 text-white font-bold text-base">
+                    Hi, {user.name.split(" ")[0]}
+                  </span>
+                )}
+
+                <Link
+                  to="/shop"
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:opacity-80"
+                >
                   Shop
                 </Link>
-                <Link to="/about" onClick={() => setMenuOpen(false)} className="hover:opacity-80 transition">
+                <Link
+                  to="/about"
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:opacity-80"
+                >
                   About
                 </Link>
-                <Link to="/login" onClick={() => setMenuOpen(false)} className="hover:opacity-80 transition">
-                  Login
-                </Link>
-                <Link to="/cart" onClick={() => setMenuOpen(false)} className="hover:opacity-80 transition">
-                  Cart (0)
+
+                {user?.role === "admin" && (
+                  <Link
+                    to="/admin/add-product"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:opacity-80"
+                  >
+                    Add Product
+                  </Link>
+                )}
+
+                {user ? (
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setMenuOpen(false);
+                    }}
+                    className="hover:opacity-80"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <Link
+                    to="/login"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:opacity-80"
+                  >
+                    Login
+                  </Link>
+                )}
+
+                <Link
+                  to="/cart"
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:opacity-80"
+                >
+                  Cart ({totalQuantity})
                 </Link>
               </motion.div>
             )}
