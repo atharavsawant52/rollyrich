@@ -88,7 +88,7 @@ export default function Navbar() {
 
               {user ? (
                 <>
-                  <span className="font-semibold text-white">{`Hi, ${
+                  <span className="font-semibold text-black">{`Hi, ${
                     user.name.split(" ")[0]
                   }`}</span>
                   <button onClick={handleLogout} className="hover:opacity-80">

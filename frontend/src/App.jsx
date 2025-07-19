@@ -1,24 +1,31 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
-import LoadingScreen from "./components/layout/LoadingScreen";
 import AppRouter from "./routes/AppRouter";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import ScrollToTop from "./components/layout/ScrollToTop";
-import { startSmoothScroll } from "./utils/smoothScroll"; // ✅ Lenis import
+import LoadingScreen from "./components/layout/LoadingScreen";
+import { startSmoothScroll } from "./utils/smoothScroll";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isFullyLoaded, setIsFullyLoaded] = useState(false);
 
-  // ✅ Show loading screen for 4.2 seconds
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 4200);
-    return () => clearTimeout(timer);
+    const handleLoad = () => {
+      setTimeout(() => {
+        setIsFullyLoaded(true);
+      }, 3000);
+    };
+
+    if (document.readyState === "complete") {
+      handleLoad();
+    } else {
+      window.addEventListener("load", handleLoad);
+    }
+
+    return () => window.removeEventListener("load", handleLoad);
   }, []);
 
-  // ✅ Initialize Lenis smooth scroll
   useEffect(() => {
     startSmoothScroll();
   }, []);
@@ -26,7 +33,7 @@ function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      {isLoading ? (
+      {!isFullyLoaded ? (
         <LoadingScreen />
       ) : (
         <>
