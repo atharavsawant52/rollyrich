@@ -8,14 +8,11 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showNavbar, setShowNavbar] = useState(true);
   const lastScrollY = useRef(0);
-
   const location = useLocation();
   const isHome = location.pathname === "/";
   const user = useSelector((state) => state.auth.user);
-
   const cartItems = useSelector((state) => state.cart.items);
   const totalQuantity = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,7 +28,6 @@ export default function Navbar() {
       }
       lastScrollY.current = currentScrollY;
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -41,6 +37,9 @@ export default function Navbar() {
     localStorage.removeItem("currentUser");
     navigate("/login");
   };
+
+  const linkStyle = "relative group";
+  const underlineStyle = `after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 group-hover:after:w-full after:h-[2px] after:bg-current after:transition-all after:duration-300`;
 
   return (
     <AnimatePresence>
@@ -71,32 +70,37 @@ export default function Navbar() {
                 isHome ? "text-white" : "text-black"
               }`}
             >
-              <Link to="/shop" className="hover:opacity-80">
+              <Link to="/shop" className={`${linkStyle} ${underlineStyle}`}>
                 Shop
               </Link>
-              <Link to="/about" className="hover:opacity-80">
+              <Link to="/about" className={`${linkStyle} ${underlineStyle}`}>
                 About
               </Link>
               {user?.role === "admin" && (
-                <Link to="/admin/add-product" className="hover:opacity-80">
+                <Link
+                  to="/admin/add-product"
+                  className={`${linkStyle} ${underlineStyle}`}
+                >
                   Add Product
                 </Link>
               )}
-              <Link to="/cart" className="hover:opacity-80">
+              <Link to="/cart" className={`${linkStyle} ${underlineStyle}`}>
                 Cart ({totalQuantity})
               </Link>
-
               {user ? (
                 <>
-                  <span className="font-semibold text-black">{`Hi, ${
-                    user.name.split(" ")[0]
-                  }`}</span>
-                  <button onClick={handleLogout} className="hover:opacity-80">
+                  <span className="font-semibold text-rose-500 flex items-center gap-1">
+                    👋 {user.name.split(" ")[0]}
+                  </span>
+                  <button
+                    onClick={handleLogout}
+                    className={`${linkStyle} ${underlineStyle}`}
+                  >
                     Logout
                   </button>
                 </>
               ) : (
-                <Link to="/login" className="hover:opacity-80">
+                <Link to="/login" className={`${linkStyle} ${underlineStyle}`}>
                   Login
                 </Link>
               )}
@@ -130,11 +134,18 @@ export default function Navbar() {
                 </button>
 
                 {user && (
-                  <span className="absolute top-6 left-6 text-white font-bold text-base">
-                    Hi, {user.name.split(" ")[0]}
+                  <span className="absolute top-6 left-6 text-rose-500 font-bold text-base">
+                    👋 {user.name.split(" ")[0]}
                   </span>
                 )}
 
+                <Link
+                  to="/"
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:opacity-80"
+                >
+                  Home
+                </Link>
                 <Link
                   to="/shop"
                   onClick={() => setMenuOpen(false)}
@@ -149,7 +160,6 @@ export default function Navbar() {
                 >
                   About
                 </Link>
-
                 {user?.role === "admin" && (
                   <Link
                     to="/admin/add-product"
@@ -159,7 +169,6 @@ export default function Navbar() {
                     Add Product
                   </Link>
                 )}
-
                 {user ? (
                   <button
                     onClick={() => {
@@ -179,7 +188,6 @@ export default function Navbar() {
                     Login
                   </Link>
                 )}
-
                 <Link
                   to="/cart"
                   onClick={() => setMenuOpen(false)}

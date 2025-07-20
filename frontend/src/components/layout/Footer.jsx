@@ -107,15 +107,33 @@ export default function Footer() {
         </h4>
         <div className="flex justify-center gap-6 text-xl text-black">
           {[
-            FaFacebookF,
-            FaTwitter,
-            FaInstagram,
-            FaPinterestP,
-            FaLinkedinIn,
-          ].map((Icon, i) => (
+            {
+              icon: FaInstagram,
+              link:
+                "https://www.instagram.com/rollyrichworld?utm_source=qr&igsh=MWdhajNrMHd3b2dkNQ%3D%3D",
+            },
+            {
+              icon: FaFacebookF,
+              link: "https://www.facebook.com/profile.php?id=61571963498340",
+            },
+            {
+              icon: FaTwitter,
+              link: "https://x.com/rollyrichworld",
+            },
+            {
+              icon: FaPinterestP,
+              link: "https://in.pinterest.com/RollyRich/",
+            },
+            {
+              icon: FaLinkedinIn,
+              link: "https://www.linkedin.com/in/rolly-rich-48b325346/",
+            },
+          ].map(({ icon: Icon, link }, i) => (
             <motion.a
               key={i}
-              href="#"
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ scale: 1.2, color: "#111" }}
               transition={{ type: "spring", stiffness: 300 }}
               className="hover:text-black"

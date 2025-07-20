@@ -17,6 +17,7 @@ export default function ProductDetail() {
   const [selectedImage, setSelectedImage] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const [error, setError] = useState("");
+  const [showSizeChart, setShowSizeChart] = useState(false);
 
   const [showDetails, setShowDetails] = useState(true);
   const [showDescription, setShowDescription] = useState(true);
@@ -158,12 +159,13 @@ export default function ProductDetail() {
                   </motion.button>
                 ))}
               </div>
-              <a
-                href="#"
+
+              <button
+                onClick={() => setShowSizeChart(true)}
                 className="text-sm text-blue-600 mt-2 inline-block underline"
               >
                 View size chart
-              </a>
+              </button>
             </div>
           )}
 
@@ -262,6 +264,82 @@ export default function ProductDetail() {
           ))}
         </motion.div>
       </div>
+
+      <AnimatePresence>
+        {showSizeChart && (
+          <>
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setShowSizeChart(false)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[90]"
+            />
+
+            <motion.div
+              key="size-chart"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-[100] shadow-xl p-6 rounded-l-2xl overflow-y-auto"
+            >
+           
+              <div className="flex justify-between items-center border-b pb-3 mb-4">
+                <h2 className="text-xl font-semibold tracking-wide">
+                  📏 Size Chart
+                </h2>
+                <button
+                  onClick={() => setShowSizeChart(false)}
+                  className="text-3xl leading-none text-gray-500 hover:text-black transition"
+                >
+                  &times;
+                </button>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full border border-gray-200 rounded-md overflow-hidden text-sm">
+                  <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
+                    <tr>
+                      <th className="p-3 text-left">Measurement</th>
+                      <th className="p-3 text-center">28</th>
+                      <th className="p-3 text-center">30</th>
+                      <th className="p-3 text-center">32</th>
+                      <th className="p-3 text-center">34</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="hover:bg-gray-50 transition">
+                      <td className="p-3 text-gray-600 font-medium">
+                        Waist (in)
+                      </td>
+                      <td className="p-3 text-center">28"</td>
+                      <td className="p-3 text-center">30"</td>
+                      <td className="p-3 text-center">32"</td>
+                      <td className="p-3 text-center">34"</td>
+                    </tr>
+                    <tr className="hover:bg-gray-50 transition">
+                      <td className="p-3 text-gray-600 font-medium">
+                        Length (in)
+                      </td>
+                      <td className="p-3 text-center">40.5"</td>
+                      <td className="p-3 text-center">41"</td>
+                      <td className="p-3 text-center">41"</td>
+                      <td className="p-3 text-center">39"</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="mt-6 text-xs text-gray-500 text-center">
+                📐 Tip: All measurements are approximate and may vary slightly.
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </motion.section>
   );
 }
