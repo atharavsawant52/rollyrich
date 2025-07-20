@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-const headingWords = ["LIMITED DROPS.", "NEVER RESTOCKED."];
-const heading = "LIMITED DROPS.\nNEVER RESTOCKED.";
+const headingWords = ["LIMITED EDITION,", "LIMITLESS STYLE."];
 
 export default function Hero() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -21,20 +20,6 @@ export default function Hero() {
     }px) scale(1.05)`,
   };
 
-  const wordVariant = {
-    hidden: { opacity: 0, y: 30, scale: 0.95 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 12,
-      },
-    },
-  };
-
   return (
     <section className="relative w-full h-screen overflow-hidden bg-black">
       <motion.img
@@ -48,7 +33,6 @@ export default function Hero() {
       />
 
       <div className="absolute inset-0 bg-black/50 z-10" />
-
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine pointer-events-none z-20" />
 
       <motion.div
@@ -57,31 +41,31 @@ export default function Hero() {
         whileInView="visible"
         viewport={{ once: true, amount: 0.4 }}
       >
-        <div className="flex flex-col items-center justify-center md:hidden text-center space-y-2 relative w-full">
-          {headingWords.map((word, index) => (
-            <motion.h1
-              key={index}
-              variants={wordVariant}
-              initial="hidden"
-              animate="visible"
-              transition={{ delay: index * 0.4 }}
-              className="text-[1.8rem] font-extrabold uppercase tracking-widest leading-snug text-white relative z-30"
-            >
-              {word}
-            </motion.h1>
-          ))}
+        <div className="md:hidden flex flex-col gap-2 text-center">
+          <motion.h1
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ type: "spring", stiffness: 120, damping: 12 }}
+            className="text-3xl font-extrabold uppercase tracking-wide leading-snug text-white hover:text-red-500 transition-all duration-300"
+          >
+            LIMITED EDITION,
+            <br />
+            <span className="text-red-500 hover:text-white transition duration-300">
+              LIMITLESS STYLE.
+            </span>
+          </motion.h1>
         </div>
 
-        <div className="hidden md:flex flex-wrap justify-center gap-x-2 text-center text-white text-6xl font-extrabold uppercase tracking-[0.2em] leading-tight relative max-w-6xl z-30">
-          {[...heading].map((char, i) => (
+        <div className="hidden md:flex flex-col gap-y-3 justify-center text-center text-white text-[3.2rem] xl:text-[4.2rem] font-extrabold uppercase tracking-wider leading-tight max-w-6xl">
+          {headingWords.map((word, index) => (
             <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 60 }}
+              key={index}
+              initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: i * 0.035 }}
-              className={`inline-block ${char === "\n" ? "w-full h-3" : ""}`}
+              transition={{ duration: 0.8, delay: index * 0.4 }}
+              className="inline-block hover:text-red-500 transition-all duration-300 hover:scale-105 cursor-default"
             >
-              {char}
+              {word}
             </motion.span>
           ))}
         </div>
@@ -90,9 +74,9 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 0.8 }}
-          className="mt-6 text-lg md:text-xl text-gray-300 max-w-xl z-30"
+          className="mt-6 text-base md:text-lg lg:text-xl text-gray-300 max-w-xl z-30 tracking-wide"
         >
-          Every design is released once. Once sold out, it's gone forever.
+          Your Style. Your Legacy. Never Duplicated.
         </motion.p>
       </motion.div>
 
@@ -102,7 +86,7 @@ export default function Hero() {
         transition={{ delay: 2, duration: 0.6 }}
         className="absolute bottom-10 w-full flex justify-center z-30"
       >
-        <div className="text-white text-sm tracking-widest animate-pulse drop-shadow-lg glow-text">
+        <div className="text-white text-sm tracking-widest animate-pulse glow-text">
           SCROLL ↓
         </div>
       </motion.div>

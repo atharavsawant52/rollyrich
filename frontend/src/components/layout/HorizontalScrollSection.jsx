@@ -14,7 +14,7 @@ export default function HorizontalScrollMarquee() {
       marquee,
       { x: 0 },
       {
-        x: -totalWidth / 2, 
+        x: -totalWidth / 2,
         duration: 60,
         ease: "linear",
         repeat: -1,
@@ -36,9 +36,11 @@ export default function HorizontalScrollMarquee() {
               .map((_, i) => (
                 <span key={`${j}-${i}`} className="shrink-0">
                   <span className="text-white mr-4">
-                    This Is More Than Fashion.
+                    Royal Garb:
                   </span>
-                  <span className="text-red-500">This Is ROLLYRICH.</span>
+                  <span className="text-red-500">
+                    Dress Like You Rule.
+                  </span>
                 </span>
               ))
           )}

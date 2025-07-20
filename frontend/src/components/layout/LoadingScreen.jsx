@@ -1,12 +1,61 @@
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import gsap from "gsap";
 
 export default function LoadingScreen() {
   const [progress, setProgress] = useState(0);
   const [hide, setHide] = useState(false);
 
+  const textMaskRef = useRef();
+  const shimmerRef = useRef();
+  const logoRef = useRef();
+  const glitchRef = useRef();
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
+
+    const tl = gsap.timeline();
+
+    tl.to(textMaskRef.current, {
+      y: 0,
+      duration: 1,
+      ease: "power4.out",
+      delay: 1.2,
+      onComplete: () => {
+        gsap.to(logoRef.current, {
+          scale: 1.05,
+          repeat: -1,
+          yoyo: true,
+          duration: 1,
+          ease: "sine.inOut",
+        });
+
+        gsap.to(logoRef.current, {
+          x: "1px",
+          y: "1px",
+          repeat: -1,
+          yoyo: true,
+          duration: 0.05,
+          ease: "power1.inOut",
+        });
+
+        gsap.to(glitchRef.current, {
+          opacity: 0.2,
+          duration: 0.05,
+          repeat: -1,
+          yoyo: true,
+          ease: "power1.inOut",
+        });
+      },
+    });
+
+    gsap.to(shimmerRef.current, {
+      x: "120%",
+      duration: 2.5,
+      delay: 1.5,
+      repeat: -1,
+      ease: "power2.inOut",
+    });
 
     const interval = setInterval(() => {
       setProgress((prev) => {
@@ -15,7 +64,7 @@ export default function LoadingScreen() {
           setTimeout(() => {
             setHide(true);
             document.body.style.overflow = "auto";
-          }, 700);
+          }, 1000);
           return 100;
         }
         return prev + 1;
@@ -32,32 +81,61 @@ export default function LoadingScreen() {
     <AnimatePresence>
       {!hide && (
         <motion.div
-          className="fixed inset-0 z-[9999] bg-[#f5f3ef] flex flex-col items-center justify-center overflow-hidden"
-          initial={{ y: 0, opacity: 1 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: "-100%", opacity: 0 }}
-          transition={{ duration: 1.1, ease: "easeInOut" }}
+          className="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden"
+          initial={{ opacity: 1 }}
+          exit={{
+            opacity: 0,
+            scale: 1.2,
+            y: "-100vh",
+            rotate: 8,
+            transition: { duration: 1.2, ease: "easeInOut" },
+          }}
         >
-          {/* Brand Title */}
-          <motion.h1
-            initial={{ scale: 0.8, opacity: 0, filter: "blur(6px)" }}
-            animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
-            transition={{ duration: 1.2 }}
-            className="text-black uppercase text-4xl md:text-6xl font-bold tracking-[0.2em] mb-10 z-10"
-          >
-            ROLLYRICH
-          </motion.h1>
+          <div className="absolute w-72 h-72 rounded-full blur-3xl bg-white/10 animate-pulse z-10" />
+          <div className="absolute w-60 h-60 rounded-full border border-white/20 animate-ping z-10 opacity-40" />
+          <div className="absolute w-52 h-52 rounded-full border border-white/30 opacity-25 z-10" />
+          <div className="absolute w-80 h-80 rounded-full animate-spin-slow bg-gradient-to-tr from-purple-500 via-pink-500 to-red-500 opacity-20 blur-2xl z-0" />
 
-          {/* Loading % */}
+          <div className="relative z-30 overflow-hidden h-[70px] md:h-[100px]">
+            <h1
+              ref={logoRef}
+              className="text-white uppercase text-4xl md:text-6xl font-bold tracking-[0.25em] relative"
+            >
+              <span className="block relative overflow-hidden">
+                <span
+                  ref={textMaskRef}
+                  className="block translate-y-full relative"
+                  style={{
+                    WebkitTextStroke: "1px white",
+                    textShadow: "0 0 20px rgba(255,255,255,0.5)",
+                  }}
+                >
+                  ROLLYRICH
+                  <span
+                    ref={shimmerRef}
+                    className="absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-80 blur-[5px] mix-blend-screen"
+                  ></span>
+                
+                  <span
+                    ref={glitchRef}
+                    className="absolute inset-0 bg-white opacity-0 mix-blend-screen blur-[3px]"
+                  ></span>
+                </span>
+              </span>
+            </h1>
+          </div>
           <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="text-[2rem] md:text-[3rem] font-light italic tracking-widest text-black relative z-10"
-            style={{ textShadow: "1px 1px 0 #999" }}
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{
+              delay: 2.2,
+              duration: 0.7,
+              type: "spring",
+              bounce: 0.6,
+            }}
+            className="absolute bottom-16 text-[1.7rem] md:text-[2.3rem] font-light italic tracking-wider text-white z-30"
           >
             {progress}%
-            <span className="absolute left-0 top-1/2 w-full h-0.5 bg-white opacity-10 blur-sm rotate-[4deg]" />
           </motion.span>
         </motion.div>
       )}
