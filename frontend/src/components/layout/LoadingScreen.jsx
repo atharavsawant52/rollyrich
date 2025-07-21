@@ -24,21 +24,13 @@ export default function LoadingScreen() {
       onComplete: () => {
         gsap.to(logoRef.current, {
           scale: 1.05,
+          x: "1px",
+          y: "1px",
           repeat: -1,
           yoyo: true,
           duration: 1,
           ease: "sine.inOut",
         });
-
-        gsap.to(logoRef.current, {
-          x: "1px",
-          y: "1px",
-          repeat: -1,
-          yoyo: true,
-          duration: 0.05,
-          ease: "power1.inOut",
-        });
-
         gsap.to(glitchRef.current, {
           opacity: 0.2,
           duration: 0.05,
@@ -85,9 +77,9 @@ export default function LoadingScreen() {
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
-            scale: 1.2,
+            scale: 1.15,
             y: "-100vh",
-            rotate: 8,
+            rotate: 6,
             transition: { duration: 1.2, ease: "easeInOut" },
           }}
         >
@@ -114,16 +106,16 @@ export default function LoadingScreen() {
                   <span
                     ref={shimmerRef}
                     className="absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-80 blur-[5px] mix-blend-screen"
-                  ></span>
-                
+                  />
                   <span
                     ref={glitchRef}
                     className="absolute inset-0 bg-white opacity-0 mix-blend-screen blur-[3px]"
-                  ></span>
+                  />
                 </span>
               </span>
             </h1>
           </div>
+
           <motion.span
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}

@@ -40,28 +40,43 @@ export default function HomeCategoriesSection() {
     }, new Map()).values()
   );
 
-
   useEffect(() => {
     if (!videoSectionRef.current) return;
 
-    gsap.fromTo(
-      videoSectionRef.current,
-      { opacity: 0, scale: 1.03 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.6,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: videoSectionRef.current,
-          start: "top 85%",
-          end: "bottom 40%",
-          toggleActions: "play reverse play reverse",
-        },
-      }
-    );
+    if (window.innerWidth < 768) {
+      gsap.fromTo(
+        videoSectionRef.current,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.5,
+          scrollTrigger: {
+            trigger: videoSectionRef.current,
+            start: "top 85%",
+            once: true,
+            lazy: false,
+          },
+        }
+      );
+    } else {
+      gsap.fromTo(
+        videoSectionRef.current,
+        { opacity: 0, scale: 1.02 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: videoSectionRef.current,
+            start: "top 85%",
+            once: true,
+            lazy: false,
+          },
+        }
+      );
+    }
   }, []);
-
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -76,13 +91,14 @@ export default function HomeCategoriesSection() {
       {
         opacity: 1,
         y: 0,
-        duration: 0.4,
+        duration: 0.3,
         ease: "power2.out",
-        stagger: 0.08,
+        stagger: 0.04,
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top 85%",
-          toggleActions: "play reverse play reverse",
+          once: true,
+          lazy: false,
         },
       }
     );
@@ -90,11 +106,10 @@ export default function HomeCategoriesSection() {
 
   return (
     <section className="bg-white py-28 px-6 md:px-14 overflow-hidden">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-start md:flex-row flex-col-reverse">
-
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
         <div
           ref={videoSectionRef}
-          className="flex flex-col items-start gap-6 order-first md:order-none w-full"
+          className="flex flex-col items-start gap-6 w-full"
         >
           <div className="relative w-full h-64 md:h-80 overflow-hidden rounded-2xl shadow-xl border border-gray-200">
             <video
@@ -125,10 +140,14 @@ export default function HomeCategoriesSection() {
           {categories.map((cat) => (
             <div
               key={`${cat.name}-${cat.id}`}
-              className="category-item flex items-center justify-between border-b border-gray-200 pb-3 cursor-pointer group relative overflow-hidden hover:pl-2 hover:bg-gray-100 transition-all duration-300"
-              onClick={() => navigate(`/category/${encodeURIComponent(cat.name)}`)}
+              className="category-item group flex items-center justify-between border-b border-gray-200 pb-3 cursor-pointer relative hover:bg-gray-100 transition-all duration-300 will-change-transform"
+              onClick={() =>
+                navigate(`/category/${encodeURIComponent(cat.name)}`)
+              }
             >
-              <div className="flex items-center gap-4 ml-2">
+              <div className="absolute left-0 top-0 h-full w-1 bg-black scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-top" />
+
+              <div className="flex items-center gap-4 ml-3">
                 <span className="text-md text-gray-400 font-semibold w-6">
                   {String(cat.id).padStart(2, "0")}
                 </span>
@@ -143,6 +162,16 @@ export default function HomeCategoriesSection() {
           ))}
         </div>
       </div>
+
+      <style>{`
+        @keyframes glide {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        .animate-glide {
+          animation: glide 2.8s linear infinite;
+        }
+      `}</style>
     </section>
   );
 }

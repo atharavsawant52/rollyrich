@@ -21,7 +21,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-black">
+    <section className="relative w-full h-screen overflow-hidden bg-black font-sans">
       <motion.img
         src="https://ik.imagekit.io/v88ozoebq/rollyrich/hero_main.png?updatedAt=1752985745417"
         alt="RollyRich Hero"
@@ -33,7 +33,7 @@ export default function Hero() {
       />
 
       <div className="absolute inset-0 bg-black/50 z-10" />
-      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine pointer-events-none z-20" />
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shine pointer-events-none z-20" />
 
       <motion.div
         className="relative z-30 flex flex-col items-center justify-center h-full text-center text-white px-4"
@@ -46,24 +46,24 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ type: "spring", stiffness: 120, damping: 12 }}
-            className="text-3xl font-extrabold uppercase tracking-wide leading-snug text-white hover:text-red-500 transition-all duration-300"
+            className="text-3xl font-extrabold uppercase tracking-wide leading-snug text-white font-heading"
           >
-            LIMITED EDITION,
+            <span className="text-white text-glow">LIMITED EDITION,</span>
             <br />
-            <span className="text-red-500 hover:text-white transition duration-300">
-              LIMITLESS STYLE.
-            </span>
+            <span className="text-red-500 text-glow">LIMITLESS STYLE.</span>
           </motion.h1>
         </div>
 
-        <div className="hidden md:flex flex-col gap-y-3 justify-center text-center text-white text-[3.2rem] xl:text-[4.2rem] font-extrabold uppercase tracking-wider leading-tight max-w-6xl">
+        <div className="hidden md:flex flex-col gap-y-3 justify-center text-center text-[3rem] xl:text-[4rem] font-extrabold uppercase tracking-wide leading-tight font-heading max-w-6xl">
           {headingWords.map((word, index) => (
             <motion.span
               key={index}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.4 }}
-              className="inline-block hover:text-red-500 transition-all duration-300 hover:scale-105 cursor-default"
+              className={`inline-block ${
+                index === 0 ? "text-white text-glow" : "text-red-500 text-glow"
+              }`}
             >
               {word}
             </motion.span>
@@ -74,7 +74,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.5, duration: 0.8 }}
-          className="mt-6 text-base md:text-lg lg:text-xl text-gray-300 max-w-xl z-30 tracking-wide"
+          className="mt-6 text-base md:text-lg lg:text-xl bg-black/40 px-4 py-2 rounded text-gray-100 max-w-xl z-30 tracking-wide"
         >
           Your Style. Your Legacy. Never Duplicated.
         </motion.p>
@@ -86,7 +86,7 @@ export default function Hero() {
         transition={{ delay: 2, duration: 0.6 }}
         className="absolute bottom-10 w-full flex justify-center z-30"
       >
-        <div className="text-white text-sm tracking-widest animate-pulse glow-text">
+        <div className="text-white font-semibold text-sm tracking-widest animate-pulse text-glow">
           SCROLL ↓
         </div>
       </motion.div>
@@ -99,8 +99,8 @@ export default function Hero() {
         .animate-shine {
           animation: shine 2.5s infinite linear;
         }
-        .glow-text {
-          text-shadow: 0 0 8px rgba(255,255,255,0.7), 0 0 20px #fff;
+        .text-glow {
+          text-shadow: 0 0 6px rgba(0, 0, 0, 0.8), 0 0 14px rgba(255,255,255,0.5);
         }
       `}</style>
     </section>

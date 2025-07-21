@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { logout } from "../../redux/features/auth/authSlice";
+import styles from "./Navbar.module.css";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -38,9 +39,6 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  const linkStyle = "relative group";
-  const underlineStyle = `after:content-[''] after:absolute after:left-0 after:-bottom-1 after:w-0 group-hover:after:w-full after:h-[2px] after:bg-current after:transition-all after:duration-300`;
-
   return (
     <AnimatePresence>
       {showNavbar && (
@@ -70,21 +68,14 @@ export default function Navbar() {
                 isHome ? "text-white" : "text-black"
               }`}
             >
-              <Link to="/shop" className={`${linkStyle} ${underlineStyle}`}>
-                Shop
-              </Link>
-              <Link to="/about" className={`${linkStyle} ${underlineStyle}`}>
-                About
-              </Link>
+              <Link to="/shop" className={styles.navUnderline}>Shop</Link>
+              <Link to="/about" className={styles.navUnderline}>About</Link>
               {user?.role === "admin" && (
-                <Link
-                  to="/admin/add-product"
-                  className={`${linkStyle} ${underlineStyle}`}
-                >
+                <Link to="/admin/add-product" className={styles.navUnderline}>
                   Add Product
                 </Link>
               )}
-              <Link to="/cart" className={`${linkStyle} ${underlineStyle}`}>
+              <Link to="/cart" className={styles.navUnderline}>
                 Cart ({totalQuantity})
               </Link>
               {user ? (
@@ -92,20 +83,18 @@ export default function Navbar() {
                   <span className="font-semibold text-rose-500 flex items-center gap-1">
                     👋 {user.name.split(" ")[0]}
                   </span>
-                  <button
-                    onClick={handleLogout}
-                    className={`${linkStyle} ${underlineStyle}`}
-                  >
+                  <button onClick={handleLogout} className={styles.navUnderline}>
                     Logout
                   </button>
                 </>
               ) : (
-                <Link to="/login" className={`${linkStyle} ${underlineStyle}`}>
+                <Link to="/login" className={styles.navUnderline}>
                   Login
                 </Link>
               )}
             </div>
 
+       
             <div className="md:hidden">
               <button
                 onClick={() => setMenuOpen(true)}
@@ -124,7 +113,7 @@ export default function Navbar() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                className="fixed inset-0 bg-black z-40 flex flex-col items-center justify-center gap-6 text-xl font-light uppercase text-white"
+                className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center gap-6 text-xl font-light uppercase text-white"
               >
                 <button
                   onClick={() => setMenuOpen(false)}
@@ -139,36 +128,17 @@ export default function Navbar() {
                   </span>
                 )}
 
-                <Link
-                  to="/"
-                  onClick={() => setMenuOpen(false)}
-                  className="hover:opacity-80"
-                >
-                  Home
-                </Link>
-                <Link
-                  to="/shop"
-                  onClick={() => setMenuOpen(false)}
-                  className="hover:opacity-80"
-                >
-                  Shop
-                </Link>
-                <Link
-                  to="/about"
-                  onClick={() => setMenuOpen(false)}
-                  className="hover:opacity-80"
-                >
-                  About
-                </Link>
+                <Link to="/" onClick={() => setMenuOpen(false)} className="hover:opacity-80">Home</Link>
+                <Link to="/shop" onClick={() => setMenuOpen(false)} className="hover:opacity-80">Shop</Link>
+                <Link to="/about" onClick={() => setMenuOpen(false)} className="hover:opacity-80">About</Link>
                 {user?.role === "admin" && (
-                  <Link
-                    to="/admin/add-product"
-                    onClick={() => setMenuOpen(false)}
-                    className="hover:opacity-80"
-                  >
+                  <Link to="/admin/add-product" onClick={() => setMenuOpen(false)} className="hover:opacity-80">
                     Add Product
                   </Link>
                 )}
+                <Link to="/cart" onClick={() => setMenuOpen(false)} className="hover:opacity-80">
+                  Cart ({totalQuantity})
+                </Link>
                 {user ? (
                   <button
                     onClick={() => {
@@ -180,21 +150,10 @@ export default function Navbar() {
                     Logout
                   </button>
                 ) : (
-                  <Link
-                    to="/login"
-                    onClick={() => setMenuOpen(false)}
-                    className="hover:opacity-80"
-                  >
+                  <Link to="/login" onClick={() => setMenuOpen(false)} className="hover:opacity-80">
                     Login
                   </Link>
                 )}
-                <Link
-                  to="/cart"
-                  onClick={() => setMenuOpen(false)}
-                  className="hover:opacity-80"
-                >
-                  Cart ({totalQuantity})
-                </Link>
               </motion.div>
             )}
           </AnimatePresence>

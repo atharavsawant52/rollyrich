@@ -23,10 +23,10 @@ export default function HorizontalScrollMarquee() {
   }, []);
 
   return (
-    <section className="w-full h-[160px] bg-gradient-to-r from-[#111827] via-[#1f2937] to-[#111827] overflow-hidden flex items-center">
+    <section className="w-full h-[140px] bg-gradient-to-r from-[#fefcea] to-[#f1daae] overflow-hidden flex items-center">
       <div
         ref={marqueeRef}
-        className="flex whitespace-nowrap text-white text-2xl md:text-4xl font-extrabold tracking-tight gap-20 px-10 will-change-transform"
+        className="flex whitespace-nowrap text-2xl md:text-4xl font-semibold tracking-tight gap-20 px-10 will-change-transform"
       >
         {Array(2)
           .fill(0)
@@ -35,12 +35,8 @@ export default function HorizontalScrollMarquee() {
               .fill(0)
               .map((_, i) => (
                 <span key={`${j}-${i}`} className="shrink-0">
-                  <span className="text-white mr-4">
-                    Royal Garb:
-                  </span>
-                  <span className="text-red-500">
-                    Dress Like You Rule.
-                  </span>
+                  <span className="text-yellow-700 mr-2">Royal Garb:</span>
+                  <span className="text-black">Dress Like You Rule.</span>
                 </span>
               ))
           )}
