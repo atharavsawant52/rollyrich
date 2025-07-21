@@ -23,6 +23,8 @@ export default function ProductDetail() {
   const [showDescription, setShowDescription] = useState(true);
   const [showCare, setShowCare] = useState(true);
 
+  const [showGoToCartButton, setShowGoToCartButton] = useState(false);
+
   useEffect(() => {
     if (product?.media?.[0]) {
       setSelectedImage(product.media[0]);
@@ -50,6 +52,11 @@ export default function ProductDetail() {
 
     dispatch(addToCart(cartItem));
     setError("");
+
+    if (window.innerWidth <= 768) {
+      setShowGoToCartButton(true);
+      setTimeout(() => setShowGoToCartButton(false), 5000);
+    }
   };
 
   if (!product) {
@@ -266,6 +273,25 @@ export default function ProductDetail() {
       </div>
 
       <AnimatePresence>
+        {showGoToCartButton && (
+          <motion.div
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="fixed bottom-5 left-1/2 -translate-x-1/2 w-[90%] sm:hidden z-50"
+          >
+            <button
+              onClick={() => navigate("/cart")}
+              className="w-full bg-black text-white py-3 rounded-xl shadow-lg text-sm font-semibold tracking-wide"
+            >
+              🛒 Go to Cart
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
         {showSizeChart && (
           <>
             <motion.div
@@ -277,7 +303,6 @@ export default function ProductDetail() {
               onClick={() => setShowSizeChart(false)}
               className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[90]"
             />
-
             <motion.div
               key="size-chart"
               initial={{ x: "100%" }}
@@ -286,7 +311,6 @@ export default function ProductDetail() {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className="fixed top-0 right-0 h-full w-full sm:w-[400px] bg-white z-[100] shadow-xl p-6 rounded-l-2xl overflow-y-auto"
             >
-           
               <div className="flex justify-between items-center border-b pb-3 mb-4">
                 <h2 className="text-xl font-semibold tracking-wide">
                   📏 Size Chart
@@ -298,7 +322,6 @@ export default function ProductDetail() {
                   &times;
                 </button>
               </div>
-
               <div className="overflow-x-auto">
                 <table className="w-full border border-gray-200 rounded-md overflow-hidden text-sm">
                   <thead className="bg-gray-100 text-gray-700 uppercase text-xs">
@@ -332,7 +355,6 @@ export default function ProductDetail() {
                   </tbody>
                 </table>
               </div>
-
               <div className="mt-6 text-xs text-gray-500 text-center">
                 📐 Tip: All measurements are approximate and may vary slightly.
               </div>

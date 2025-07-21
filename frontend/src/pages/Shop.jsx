@@ -14,12 +14,23 @@ export default function Shop() {
     dispatch(getProducts());
   }, [dispatch]);
 
-  const categories = ["All", ...new Set(items.map((item) => item.category))];
+  const categories = [
+    "All",
+    ...new Set(
+      items
+        .filter((item) => item.status !== "soldout")
+        .map((item) => item.category)
+    ),
+  ];
 
   const filteredProducts =
     selectedCategory === "All"
-      ? items
-      : items.filter((product) => product.category === selectedCategory);
+      ? items.filter((product) => product.status !== "soldout")
+      : items.filter(
+          (product) =>
+            product.category === selectedCategory &&
+            product.status !== "soldout"
+        );
 
   return (
     <section className="min-h-screen px-6 md:px-14 py-20 mt-10 bg-white">
