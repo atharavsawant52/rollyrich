@@ -50,7 +50,9 @@ export default function Hero() {
           >
             <span className="text-white text-glow">LIMITED EDITION,</span>
             <br />
-            <span className="text-red-500 text-glow">LIMITLESS STYLE.</span>
+            <span style={{ color: "#D4AF37" }} className="text-glow">
+              LIMITLESS STYLE.
+            </span>
           </motion.h1>
         </div>
 

@@ -28,9 +28,19 @@ export default function Checkout() {
     phone: "",
   });
 
+  const [paymentForm, setPaymentForm] = useState({
+    cardName: "",
+    cardNumber: "",
+    expiry: "",
+    cvv: "",
+    upiId: "",
+  });
+
+  const [errors, setErrors] = useState({});
+  const [paymentErrors, setPaymentErrors] = useState({});
+
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
-  const [errors, setErrors] = useState({});
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponError, setCouponError] = useState("");
 
@@ -88,6 +98,12 @@ export default function Checkout() {
     setErrors({ ...errors, [e.target.name]: "" });
   };
 
+  const handlePaymentChange = (e) => {
+    const { name, value } = e.target;
+    setPaymentForm({ ...paymentForm, [name]: value });
+    setPaymentErrors({ ...paymentErrors, [name]: "" });
+  };
+
   const validate = () => {
     let newErrors = {};
     if (!form.name.trim()) newErrors.name = "Name is required";
@@ -100,6 +116,35 @@ export default function Checkout() {
     if (!form.phone || !/^\d{10}$/.test(form.phone))
       newErrors.phone = "Enter 10-digit phone number";
     setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validatePayment = () => {
+    let newErrors = {};
+
+    if (selectedMethod === "card") {
+      if (!paymentForm.cardName.trim())
+        newErrors.cardName = "Cardholder name is required";
+      if (
+        !paymentForm.cardNumber ||
+        !/^\d{16}$/.test(paymentForm.cardNumber.replace(/\s/g, ""))
+      )
+        newErrors.cardNumber = "Enter valid 16-digit card number";
+      if (
+        !paymentForm.expiry ||
+        !/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(paymentForm.expiry)
+      )
+        newErrors.expiry = "Enter valid MM/YY format";
+      if (!paymentForm.cvv || !/^\d{3}$/.test(paymentForm.cvv))
+        newErrors.cvv = "Enter 3-digit CVV";
+    }
+
+    if (selectedMethod === "upi") {
+      if (!paymentForm.upiId || !/^[\w.-]+@[\w.-]+$/.test(paymentForm.upiId))
+        newErrors.upiId = "Enter valid UPI ID (e.g., name@bank)";
+    }
+
+    setPaymentErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
@@ -208,6 +253,8 @@ export default function Checkout() {
   };
 
   const handleFakePayment = () => {
+    if (selectedMethod !== "cod" && !validatePayment()) return;
+
     const orderData = {
       customer: form,
       items: cartItems,
@@ -228,6 +275,40 @@ export default function Checkout() {
     setShowPayment(false);
   };
 
+  const formatCardNumber = (value) => {
+    return value
+      .replace(/\D/g, "")
+      .replace(/(\d{4})/g, "$1 ")
+      .trim()
+      .substring(0, 19);
+  };
+
+  const formatExpiry = (value) => {
+    return value
+      .replace(/\D/g, "")
+      .replace(/^(\d{2})(\d)/g, "$1/$2")
+      .substring(0, 5);
+  };
+
+  const paymentFormValid = () => {
+    if (selectedMethod === "cod") return true;
+
+    if (selectedMethod === "card") {
+      return (
+        paymentForm.cardName.trim() &&
+        /^\d{16}$/.test(paymentForm.cardNumber.replace(/\s/g, "")) &&
+        /^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(paymentForm.expiry) &&
+        /^\d{3}$/.test(paymentForm.cvv)
+      );
+    }
+
+    if (selectedMethod === "upi") {
+      return /^[\w.-]+@[\w.-]+$/.test(paymentForm.upiId);
+    }
+
+    return false;
+  };
+
   return (
     <div className="min-h-screen bg-[#faf9f5] text-[#1a1a1a] px-4 md:px-12 py-12 font-['EB_Garamond'] pb-36 mt-11">
       <motion.h1
@@ -240,7 +321,6 @@ export default function Checkout() {
       </motion.h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-        {/* Billing Form */}
         <motion.div
           initial={{ x: -100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -307,7 +387,11 @@ export default function Checkout() {
                 className="flex items-center justify-between py-3 border-b border-[#f0f0f0]"
               >
                 <div className="flex items-center">
-                  <div className="bg-gray-200 border-2 border-dashed rounded-xl w-16 h-16" />
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-16 h-16 object-cover rounded-xl border border-gray-300"
+                  />
                   <div className="ml-4">
                     <h3 className="font-medium">{item.title}</h3>
                     <p className="text-sm text-[#6b6b6b]">
@@ -315,6 +399,7 @@ export default function Checkout() {
                     </p>
                   </div>
                 </div>
+
                 <span className="font-medium">
                   ₹{item.price * item.quantity}
                 </span>
@@ -402,9 +487,7 @@ export default function Checkout() {
               >
                 &times;
               </button>
-
               <h3 className="text-2xl font-bold mb-6">Payment Method</h3>
-
               <div className="mb-8">
                 <h4 className="text-lg font-semibold mb-4">Billing Details</h4>
                 <div className="bg-[#f9f9f9] rounded-lg p-4 text-sm">
@@ -423,7 +506,6 @@ export default function Checkout() {
                   </p>
                 </div>
               </div>
-
               <div className="mb-6">
                 <label className="block text-sm font-medium text-[#5c5c5c] mb-2">
                   Select Payment Method
@@ -447,16 +529,208 @@ export default function Checkout() {
                 </div>
               </div>
 
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedMethod}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.2 }}
+                  className="mb-6"
+                >
+                  {selectedMethod === "card" && (
+                    <div className="space-y-4">
+                      <h4 className="text-lg font-semibold mb-2">
+                        Card Details
+                      </h4>
+
+                      <div>
+                        <label className="block text-sm font-medium text-[#5c5c5c] mb-1">
+                          Cardholder Name
+                        </label>
+                        <input
+                          type="text"
+                          name="cardName"
+                          placeholder="Name on card"
+                          className={`px-4 py-3 w-full rounded-lg border ${
+                            paymentErrors.cardName
+                              ? "border-[#d32f2f]"
+                              : "border-[#d4d4d4]"
+                          } focus:outline-none focus:ring-1 focus:ring-[#D4AF37]`}
+                          onChange={handlePaymentChange}
+                          value={paymentForm.cardName}
+                        />
+                        {paymentErrors.cardName && (
+                          <span className="text-[#d32f2f] text-xs mt-1 block">
+                            {paymentErrors.cardName}
+                          </span>
+                        )}
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-[#5c5c5c] mb-1">
+                          Card Number
+                        </label>
+                        <input
+                          type="text"
+                          name="cardNumber"
+                          placeholder="0000 0000 0000 0000"
+                          className={`px-4 py-3 w-full rounded-lg border ${
+                            paymentErrors.cardNumber
+                              ? "border-[#d32f2f]"
+                              : "border-[#d4d4d4]"
+                          } focus:outline-none focus:ring-1 focus:ring-[#D4AF37]`}
+                          onChange={(e) => {
+                            const formatted = formatCardNumber(e.target.value);
+                            setPaymentForm({
+                              ...paymentForm,
+                              cardNumber: formatted,
+                            });
+                            setPaymentErrors({
+                              ...paymentErrors,
+                              cardNumber: "",
+                            });
+                          }}
+                          value={paymentForm.cardNumber}
+                        />
+                        {paymentErrors.cardNumber && (
+                          <span className="text-[#d32f2f] text-xs mt-1 block">
+                            {paymentErrors.cardNumber}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-[#5c5c5c] mb-1">
+                            Expiry Date
+                          </label>
+                          <input
+                            type="text"
+                            name="expiry"
+                            placeholder="MM/YY"
+                            className={`px-4 py-3 w-full rounded-lg border ${
+                              paymentErrors.expiry
+                                ? "border-[#d32f2f]"
+                                : "border-[#d4d4d4]"
+                            } focus:outline-none focus:ring-1 focus:ring-[#D4AF37]`}
+                            onChange={(e) => {
+                              const formatted = formatExpiry(e.target.value);
+                              setPaymentForm({
+                                ...paymentForm,
+                                expiry: formatted,
+                              });
+                              setPaymentErrors({
+                                ...paymentErrors,
+                                expiry: "",
+                              });
+                            }}
+                            value={paymentForm.expiry}
+                          />
+                          {paymentErrors.expiry && (
+                            <span className="text-[#d32f2f] text-xs mt-1 block">
+                              {paymentErrors.expiry}
+                            </span>
+                          )}
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-[#5c5c5c] mb-1">
+                            CVV
+                          </label>
+                          <input
+                            type="text"
+                            name="cvv"
+                            placeholder="123"
+                            maxLength={3}
+                            className={`px-4 py-3 w-full rounded-lg border ${
+                              paymentErrors.cvv
+                                ? "border-[#d32f2f]"
+                                : "border-[#d4d4d4]"
+                            } focus:outline-none focus:ring-1 focus:ring-[#D4AF37]`}
+                            onChange={handlePaymentChange}
+                            value={paymentForm.cvv}
+                          />
+                          {paymentErrors.cvv && (
+                            <span className="text-[#d32f2f] text-xs mt-1 block">
+                              {paymentErrors.cvv}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedMethod === "upi" && (
+                    <div className="space-y-4">
+                      <h4 className="text-lg font-semibold mb-2">
+                        UPI Details
+                      </h4>
+
+                      <div>
+                        <label className="block text-sm font-medium text-[#5c5c5c] mb-1">
+                          UPI ID
+                        </label>
+                        <input
+                          type="text"
+                          name="upiId"
+                          placeholder="yourname@bank"
+                          className={`px-4 py-3 w-full rounded-lg border ${
+                            paymentErrors.upiId
+                              ? "border-[#d32f2f]"
+                              : "border-[#d4d4d4]"
+                          } focus:outline-none focus:ring-1 focus:ring-[#D4AF37]`}
+                          onChange={handlePaymentChange}
+                          value={paymentForm.upiId}
+                        />
+                        {paymentErrors.upiId && (
+                          <span className="text-[#d32f2f] text-xs mt-1 block">
+                            {paymentErrors.upiId}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="text-sm text-gray-500">
+                        <p>Example UPI formats:</p>
+                        <ul className="list-disc pl-5 mt-1">
+                          <li>yourname@bank</li>
+                          <li>yournumber@upi</li>
+                          <li>yourname@bankname</li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedMethod === "cod" && (
+                    <div className="bg-[#f9f9f9] rounded-xl p-5 text-center">
+                      <div className="text-5xl mb-3">💰</div>
+                      <p className="text-lg font-medium">
+                        Pay when your luxury items arrive
+                      </p>
+                      <p className="text-sm text-gray-500 mt-2">
+                        Cash on Delivery (COD) available for all orders
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
               <div className="flex justify-between font-bold text-xl mt-4 pt-4 border-t border-[#e6e6e6]">
                 <span>Total</span>
                 <span className="text-[#D4AF37]">₹{grandTotal}</span>
               </div>
 
               <motion.button
-                whileHover={{ scale: 1.03, backgroundColor: "#c19c30" }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{
+                  scale: paymentFormValid() ? 1.03 : 1,
+                  backgroundColor: paymentFormValid() ? "#c19c30" : "#b0b0b0",
+                }}
                 onClick={handleFakePayment}
-                className="w-full mt-6 bg-[#D4AF37] text-white py-4 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+                disabled={!paymentFormValid()}
+                className={`w-full mt-6 py-4 rounded-lg font-semibold shadow-lg transition-all duration-300 ${
+                  paymentFormValid()
+                    ? "bg-[#D4AF37] text-white hover:shadow-xl"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }`}
               >
                 {selectedMethod === "cod" ? "Place Order" : "Pay Now"}
               </motion.button>

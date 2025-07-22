@@ -63,15 +63,18 @@ export default function Navbar() {
               />
             </Link>
 
-          
             <div
               className={`hidden md:flex items-center gap-8 text-sm uppercase font-medium tracking-wider ${
                 isHome ? "text-white" : "text-black"
               }`}
             >
-              <Link to="/shop" className={styles.navUnderline}>Shop</Link>
-              <Link to="/about" className={styles.navUnderline}>About</Link>
-              <Link to="/archive" className={styles.navUnderline}>Archive</Link>
+              <Link to="/shop" className={styles.navUnderline}>
+                Shop
+              </Link>
+              <Link to="/about" className={styles.navUnderline}>
+                About
+              </Link>
+
               {user?.role === "admin" && (
                 <Link to="/admin/add-product" className={styles.navUnderline}>
                   Add Product
@@ -90,7 +93,10 @@ export default function Navbar() {
                   <span className="font-semibold text-rose-500 flex items-center gap-1">
                     👋 {user.name.split(" ")[0]}
                   </span>
-                  <button onClick={handleLogout} className={styles.navUnderline}>
+                  <button
+                    onClick={handleLogout}
+                    className={styles.navUnderline}
+                  >
                     Logout
                   </button>
                 </>
@@ -101,7 +107,6 @@ export default function Navbar() {
               )}
             </div>
 
-          
             <div className="md:hidden">
               <button
                 onClick={() => setMenuOpen(true)}
@@ -112,7 +117,6 @@ export default function Navbar() {
             </div>
           </div>
 
-       
           <AnimatePresence>
             {menuOpen && (
               <motion.div
@@ -136,20 +140,50 @@ export default function Navbar() {
                   </span>
                 )}
 
-                <Link to="/" onClick={() => setMenuOpen(false)} className="hover:opacity-80">Home</Link>
-                <Link to="/shop" onClick={() => setMenuOpen(false)} className="hover:opacity-80">Shop</Link>
-                <Link to="/about" onClick={() => setMenuOpen(false)} className="hover:opacity-80">About</Link>
-                <Link to="/archive" onClick={() => setMenuOpen(false)} className="hover:opacity-80">Archive</Link>
+                <Link
+                  to="/"
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:opacity-80"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/shop"
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:opacity-80"
+                >
+                  Shop
+                </Link>
+                <Link
+                  to="/about"
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:opacity-80"
+                >
+                  About
+                </Link>
+
                 {user?.role === "admin" && (
-                  <Link to="/admin/add-product" onClick={() => setMenuOpen(false)} className="hover:opacity-80">
+                  <Link
+                    to="/admin/add-product"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:opacity-80"
+                  >
                     Add Product
                   </Link>
                 )}
-                <Link to="/cart" onClick={() => setMenuOpen(false)} className="hover:opacity-80">
+                <Link
+                  to="/cart"
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:opacity-80"
+                >
                   Cart ({totalQuantity})
                 </Link>
                 {user && (
-                  <Link to="/orders" onClick={() => setMenuOpen(false)} className="hover:opacity-80">
+                  <Link
+                    to="/orders"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:opacity-80"
+                  >
                     Orders
                   </Link>
                 )}
@@ -164,7 +198,11 @@ export default function Navbar() {
                     Logout
                   </button>
                 ) : (
-                  <Link to="/login" onClick={() => setMenuOpen(false)} className="hover:opacity-80">
+                  <Link
+                    to="/login"
+                    onClick={() => setMenuOpen(false)}
+                    className="hover:opacity-80"
+                  >
                     Login
                   </Link>
                 )}
