@@ -4,11 +4,12 @@ import {
   updateQuantity,
   clearCart,
 } from "../redux/features/cart/cartSlice";
-import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Cart() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.items);
 
   const totalAmount = cartItems.reduce(
@@ -120,6 +121,7 @@ export default function Cart() {
             </motion.div>
           ))}
 
+          {/* Total + Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -130,15 +132,23 @@ export default function Cart() {
               Total: ₹{totalAmount}
             </h3>
 
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-wrap">
               <button
                 onClick={() => dispatch(clearCart())}
                 className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-black rounded-md shadow-sm transition"
               >
                 Clear Cart
               </button>
-              <button className="px-6 py-2 bg-black text-white rounded-md hover:bg-gray-900 transition shadow">
-                Checkout
+              <button
+                onClick={() => navigate("/checkout")}
+                className={`px-6 py-2 text-white rounded-md transition shadow ${
+                  cartItems.length === 0
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-black hover:bg-gray-900"
+                }`}
+                disabled={cartItems.length === 0}
+              >
+                Proceed to Checkout
               </button>
             </div>
           </motion.div>

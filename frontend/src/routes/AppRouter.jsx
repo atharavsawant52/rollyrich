@@ -11,6 +11,8 @@ const Login = lazy(() => import("../pages/Login"));
 const Signup = lazy(() => import("../pages/Signup"));
 const CategoryPage = lazy(() => import("../pages/CategoryPage"));
 const Cart = lazy(() => import("../pages/Cart"));
+const Checkout = lazy(() => import("../pages/Checkout"));
+const Orders = lazy(() => import("../pages/Orders"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 function AppRouter() {
@@ -37,6 +39,22 @@ function AppRouter() {
           element={
             <RequireAuth>
               <Cart />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/checkout"
+          element={
+            <RequireAuth>
+              <Checkout />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <RequireAuth>
+              <Orders />
             </RequireAuth>
           }
         />

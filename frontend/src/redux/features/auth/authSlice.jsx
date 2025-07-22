@@ -1,8 +1,4 @@
-// src/redux/features/auth/authSlice.js
-
 import { createSlice } from "@reduxjs/toolkit";
-
-// 🔁 Try to load user from localStorage
 const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
 const initialState = {
