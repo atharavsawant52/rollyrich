@@ -1,53 +1,48 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import gsap from "gsap";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
 
 export default function LoadingScreen() {
   const [progress, setProgress] = useState(0);
   const [hide, setHide] = useState(false);
-
-  const textMaskRef = useRef();
+  const circleRef = useRef();
   const shimmerRef = useRef();
-  const logoRef = useRef();
-  const glitchRef = useRef();
+  const lettersRef = useRef([]);
+  const particlesInit = async (main) => {
+    await loadFull(main);
+  };
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
 
     const tl = gsap.timeline();
-
-    tl.to(textMaskRef.current, {
-      y: 0,
-      duration: 1,
-      ease: "power4.out",
-      delay: 1.2,
-      onComplete: () => {
-        gsap.to(logoRef.current, {
-          scale: 1.05,
-          x: "1px",
-          y: "1px",
-          repeat: -1,
-          yoyo: true,
-          duration: 1,
-          ease: "sine.inOut",
-        });
-        gsap.to(glitchRef.current, {
-          opacity: 0.2,
-          duration: 0.05,
-          repeat: -1,
-          yoyo: true,
-          ease: "power1.inOut",
-        });
-      },
+    tl.to(circleRef.current, {
+      strokeDashoffset: 0,
+      duration: 2,
+      ease: "power2.inOut",
     });
 
     gsap.to(shimmerRef.current, {
-      x: "120%",
-      duration: 2.5,
-      delay: 1.5,
+      rotate: 360,
       repeat: -1,
-      ease: "power2.inOut",
+      duration: 3,
+      ease: "linear",
     });
+
+    gsap.fromTo(
+      lettersRef.current,
+      { y: "100%", opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        stagger: 0.1,
+        duration: 0.8,
+        ease: "power4.out",
+        delay: 2.3,
+      }
+    );
 
     const interval = setInterval(() => {
       setProgress((prev) => {
@@ -69,66 +64,113 @@ export default function LoadingScreen() {
     };
   }, []);
 
+  const radius = 90;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (progress / 100) * circumference;
+
+  const logoText = "ROLLYRICH";
+
   return (
     <AnimatePresence>
       {!hide && (
         <motion.div
-          className="fixed inset-0 z-[9999] bg-black flex items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-[9999] bg-white flex items-center justify-center overflow-hidden"
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
-            scale: 1.15,
+            scale: 1.1,
             y: "-100vh",
-            rotate: 6,
             transition: { duration: 1.2, ease: "easeInOut" },
           }}
         >
-          <div className="absolute w-72 h-72 rounded-full blur-3xl bg-white/10 animate-pulse z-10" />
-          <div className="absolute w-60 h-60 rounded-full border border-white/20 animate-ping z-10 opacity-40" />
-          <div className="absolute w-52 h-52 rounded-full border border-white/30 opacity-25 z-10" />
-          <div className="absolute w-80 h-80 rounded-full animate-spin-slow bg-gradient-to-tr from-purple-500 via-pink-500 to-red-500 opacity-20 blur-2xl z-0" />
-
-          <div className="relative z-30 overflow-hidden h-[70px] md:h-[100px]">
-            <h1
-              ref={logoRef}
-              className="text-white uppercase text-4xl md:text-6xl font-bold tracking-[0.25em] relative"
-            >
-              <span className="block relative overflow-hidden">
-                <span
-                  ref={textMaskRef}
-                  className="block translate-y-full relative"
-                  style={{
-                    WebkitTextStroke: "1px white",
-                    textShadow: "0 0 20px rgba(255,255,255,0.5)",
-                  }}
-                >
-                  ROLLYRICH
-                  <span
-                    ref={shimmerRef}
-                    className="absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-white to-transparent opacity-80 blur-[5px] mix-blend-screen"
-                  />
-                  <span
-                    ref={glitchRef}
-                    className="absolute inset-0 bg-white opacity-0 mix-blend-screen blur-[3px]"
-                  />
-                </span>
-              </span>
-            </h1>
-          </div>
-
-          <motion.span
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{
-              delay: 2.2,
-              duration: 0.7,
-              type: "spring",
-              bounce: 0.6,
+          <Particles
+            id="tsparticles"
+            init={particlesInit}
+            options={{
+              fullScreen: { enable: false },
+              background: { color: "#ffffff" },
+              particles: {
+                number: { value: 40 },
+                color: { value: "#f472b6" },
+                shape: { type: "circle" },
+                opacity: { value: 0.4 },
+                size: { value: { min: 1, max: 4 } },
+                move: {
+                  enable: true,
+                  speed: 1,
+                  direction: "none",
+                  random: true,
+                  outModes: "out",
+                },
+              },
             }}
-            className="absolute bottom-16 text-[1.7rem] md:text-[2.3rem] font-light italic tracking-wider text-white z-30"
-          >
-            {progress}%
-          </motion.span>
+            className="absolute w-full h-full z-0"
+          />
+          <div className="absolute w-72 h-72 rounded-full blur-3xl bg-pink-200 animate-pulse z-10" />
+          <div
+            ref={shimmerRef}
+            className="absolute w-96 h-96 rounded-full bg-gradient-to-tr from-pink-300 via-purple-300 to-white opacity-30 blur-2xl z-0"
+          />
+
+          <div className="relative z-30 flex flex-col items-center justify-center">
+            <svg width="200" height="200" className="relative z-20">
+              <circle
+                cx="100"
+                cy="100"
+                r={radius}
+                fill="none"
+                stroke="#eee"
+                strokeWidth="10"
+              />
+              <circle
+                ref={circleRef}
+                cx="100"
+                cy="100"
+                r={radius}
+                fill="none"
+                stroke="#111"
+                strokeWidth="10"
+                strokeDasharray={circumference}
+                strokeDashoffset={offset}
+                strokeLinecap="round"
+              />
+            </svg>
+
+            <h1 className="flex mt-6 space-x-1 md:space-x-2 text-3xl md:text-5xl font-bold tracking-[0.2em] text-black">
+              {logoText.split("").map((char, index) => (
+                <motion.span
+                  key={index}
+                  ref={(el) => (lettersRef.current[index] = el)}
+                  className="inline-block opacity-0 animate-glowText"
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 3, duration: 1 }}
+              className="text-sm md:text-lg font-light text-gray-500 tracking-widest mt-2"
+            >
+              LIMITED · LOVED · LEGENDARY
+            </motion.p>
+
+            <motion.span
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{
+                delay: 2.8,
+                duration: 0.6,
+                type: "spring",
+                bounce: 0.4,
+              }}
+              className="mt-4 text-xl font-light tracking-wide text-gray-600"
+            >
+              {progress}%
+            </motion.span>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

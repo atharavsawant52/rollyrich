@@ -5,3 +5,16 @@ body {
   scroll-behavior: auto !important;
   overflow-x: hidden;
 }
+
+@keyframes glowText {
+  0%, 100% {
+    text-shadow: 0 0 5px #f472b6, 0 0 10px #ec4899, 0 0 15px #db2777;
+  }
+  50% {
+    text-shadow: 0 0 20px #f472b6, 0 0 30px #ec4899, 0 0 40px #db2777;
+  }
+}
+
+.animate-glowText {
+  animation: glowText 3s ease-in-out infinite;
+}
