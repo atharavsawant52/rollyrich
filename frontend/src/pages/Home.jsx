@@ -3,6 +3,8 @@ import Hero from "../components/layout/Hero";
 import HorizontalScrollSection from "../components/layout/HorizontalScrollSection";
 import NewLaunched from "../components/layout/NewLaunched";
 import ProductShowcaseSection from "../components/layout/ProductShowcaseSection";
+import LuxuryReviews from "../components/layout/ReviewSection";
+import ReviewSection from "../components/layout/ReviewSection";
 import HomeCategoriesSection from "./HomeCategoriesSection";
 
 export default function Home() {
@@ -15,6 +17,7 @@ export default function Home() {
       <ProductShowcaseSection />
       <HorizontalScrollSection/>
       <Archive/>
+      <LuxuryReviews/>
     </main>
   );
 }
