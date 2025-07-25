@@ -14,15 +14,13 @@ export default function ProductDetail() {
     state.products.items.find((item) => item.id === id)
   );
 
-  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
   const [selectedSize, setSelectedSize] = useState("");
   const [error, setError] = useState("");
   const [showSizeChart, setShowSizeChart] = useState(false);
-
   const [showDetails, setShowDetails] = useState(true);
   const [showDescription, setShowDescription] = useState(true);
   const [showCare, setShowCare] = useState(true);
-
   const [showGoToCartButton, setShowGoToCartButton] = useState(false);
 
   useEffect(() => {
@@ -91,21 +89,27 @@ export default function ProductDetail() {
           transition={{ duration: 1 }}
         >
           <div>
-            {selectedImage.endsWith(".webm") ? (
-              <video
-                src={selectedImage}
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="w-full h-[500px] object-contain border rounded-xl shadow-lg"
-              />
+            {selectedImage ? (
+              selectedImage.endsWith(".webm") ? (
+                <video
+                  src={selectedImage}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-[500px] object-contain border rounded-xl shadow-lg"
+                />
+              ) : (
+                <img
+                  src={selectedImage}
+                  className="w-full h-[500px] object-contain border rounded-xl shadow-lg"
+                  alt="Product"
+                />
+              )
             ) : (
-              <img
-                src={selectedImage}
-                className="w-full h-[500px] object-contain border rounded-xl shadow-lg"
-                alt="Product"
-              />
+              <div className="w-full h-[500px] flex items-center justify-center bg-gray-100 border rounded-xl shadow-lg">
+                <span className="text-gray-400">No preview available</span>
+              </div>
             )}
           </div>
 
@@ -166,7 +170,6 @@ export default function ProductDetail() {
                   </motion.button>
                 ))}
               </div>
-
               <button
                 onClick={() => setShowSizeChart(true)}
                 className="text-sm text-blue-600 mt-2 inline-block underline"
@@ -335,18 +338,14 @@ export default function ProductDetail() {
                   </thead>
                   <tbody>
                     <tr className="hover:bg-gray-50 transition">
-                      <td className="p-3 text-gray-600 font-medium">
-                        Waist (in)
-                      </td>
+                      <td className="p-3 text-gray-600 font-medium">Waist (in)</td>
                       <td className="p-3 text-center">28"</td>
                       <td className="p-3 text-center">30"</td>
                       <td className="p-3 text-center">32"</td>
                       <td className="p-3 text-center">34"</td>
                     </tr>
                     <tr className="hover:bg-gray-50 transition">
-                      <td className="p-3 text-gray-600 font-medium">
-                        Length (in)
-                      </td>
+                      <td className="p-3 text-gray-600 font-medium">Length (in)</td>
                       <td className="p-3 text-center">40.5"</td>
                       <td className="p-3 text-center">41"</td>
                       <td className="p-3 text-center">41"</td>
